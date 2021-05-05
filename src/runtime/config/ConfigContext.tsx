@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useState } from 'react';
-import { Config, initialConfig } from '../../config';
+import { Config, initialConfig } from './types';
 
 type ContextValue = undefined | Config;
 const ConfigContext = React.createContext<ContextValue>(undefined);
