@@ -11,7 +11,6 @@ export enum StakingStatus {
   NOT_READY = 'NOT_READY',
   READY = 'READY',
   STAKING = 'STAKING',
-  DONE = 'DONE'
 }
 
 const nextStatus = (balance: BigNumber, amount: BigNumber) => {

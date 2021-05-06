@@ -10,6 +10,7 @@ import LoadableButton from '../../components/button/LoadableButton';
 import AssetSummary from '../../components/form/AssetSummary';
 import useStake, { StakingStatus } from './hook/useStake';
 import WalletConnection from '../wallet/WalletConnection';
+import { useCallback } from 'react';
 
 export type StakeProps = {
   token: TokenConfig
@@ -19,10 +20,10 @@ export default function Stake({ token }: StakeProps) {
   const { loading, balance, refresh } = useTokenBalance(token.poolContract, 0);
   const { amount, changeAmount, stakingStatus, stake } = useStake(token, balance);
 
-  const handleStake = async () => {
+  const handleStake = useCallback(async () => {
     await stake();
     await refresh();
-  };
+  },[stake, refresh]);
 
   return (
     <>

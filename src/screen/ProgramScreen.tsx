@@ -6,6 +6,7 @@ import { Route, Switch } from 'react-router-dom';
 import Stake from '../features/stake/Stake';
 import { TokenConfig } from '../runtime/config/types';
 import { useProgram } from '../features/program/hook/useProgram';
+import { Unstake } from '../features/unstake/Unstake';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -53,8 +54,8 @@ export default function ProgramScreen() {
         className={classes.tab}
       />
       <Tab
-        label='Withdraw'
-        value={paths.WITHDRAW}
+        label='Unstake'
+        value={paths.UNSTAKE}
         className={classes.tab}
       />
       <Tab
@@ -65,6 +66,7 @@ export default function ProgramScreen() {
     </Tabs>
     <Switch>
       <Route path={paths.STAKE} exact component={WithToken(Stake)} />
+      <Route path={paths.UNSTAKE} exact component={WithToken(Unstake)} />
     </Switch>
   </Container>);
 }

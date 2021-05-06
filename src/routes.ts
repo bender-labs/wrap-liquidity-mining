@@ -1,10 +1,10 @@
 const baseOp = '/op/:token';
 const STAKE = `${baseOp}/stake`;
-const WITHDRAW = `${baseOp}/withdraw`;
+const UNSTAKE = `${baseOp}/unstake`;
 const CLAIM = `${baseOp}/claim`;
 
-export const opPaths = [STAKE, WITHDRAW, CLAIM];
+export const opPaths = [STAKE, UNSTAKE, CLAIM];
 
-export const paths = { STAKE, WITHDRAW, CLAIM };
+export const paths = { STAKE, UNSTAKE, CLAIM };
 
-export const opPage = (v: string)=> STAKE.replace(':token', v)
+export const opPage = (v: string) => STAKE.replace(':token', v);

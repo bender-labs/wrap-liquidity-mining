@@ -17,8 +17,10 @@ export default class StakingApi {
         token_id: 0
       }
     }]).toTransferParams();
-    const opg = await this.library.wallet.batch()
-      .withTransfer(addOperator).send();
+    const opg = await this.library.wallet
+      .batch()
+      .withTransfer(addOperator)
+      .send();
     return opg.opHash;
   }
 }
