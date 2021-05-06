@@ -79,7 +79,9 @@ const Render = () => {
             alignItems='center'
           >
             <Grid item>
-              <Link to='/'><img src={logo} className={classes.logo} alt='Logo' /></Link>
+              <Link to='/'>
+                <img src={logo} className={classes.logo} alt='Logo' />
+              </Link>
 
             </Grid>
           </Grid>

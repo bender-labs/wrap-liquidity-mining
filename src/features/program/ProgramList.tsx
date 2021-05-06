@@ -2,6 +2,7 @@ import { TokenConfig } from '../../runtime/config/types';
 import { PaperContent } from '../../components/paper/Paper';
 import { createStyles, Grid, makeStyles } from '@material-ui/core';
 import TezosTokenIcon from '../../components/icons/TezosTokenIcon';
+import quipu from './quipu.png';
 
 export type ProgramListProps = {
   tokens: TokenConfig[]
@@ -16,6 +17,10 @@ const useStyle = makeStyles(() => createStyles({
     '&:hover': {
       cursor: 'pointer'
     }
+  },
+  images: {
+    '& img': { width: 60, height: 60, marginRight: 5, verticalAlign: 'middle' },
+    '& :last-child': { marginLeft: '-30px'}
   }
 }));
 
@@ -24,7 +29,9 @@ function Program({ token, onClick }: { token: TokenConfig, onClick: () => void }
   return (
     <PaperContent className={classes.main}>
       <Grid container justify={'space-between'} alignItems={'center'} onClick={onClick} className={classes.item}>
-        <Grid item><TezosTokenIcon url={token.thumbnailUri} /></Grid>
+        <Grid item className={classes.images}>
+          <img src={quipu} alt='quipuswap' />
+          <TezosTokenIcon url={token.thumbnailUri} /></Grid>
         <Grid item>{token.name}</Grid>
         <Grid item>{token.symbol}</Grid>
       </Grid>
