@@ -2,6 +2,8 @@ import { Box, Container, createStyles, makeStyles, Typography } from '@material-
 import React from 'react';
 import { useConfig } from '../runtime/config/ConfigContext';
 import ProgramList from '../features/program/ProgramList';
+import { useHistory } from 'react-router';
+import { opPage } from '../routes';
 
 const useStyles = makeStyles((theme) => createStyles({
   subtitle: {
@@ -9,8 +11,9 @@ const useStyles = makeStyles((theme) => createStyles({
   }
 }));
 
-export default function ProgramScreen() {
+export default function ProgramsScreen() {
   const classes = useStyles();
+  const history = useHistory();
   const { tokens } = useConfig();
   return (
     <Container maxWidth={'md'}>
@@ -21,7 +24,8 @@ export default function ProgramScreen() {
       </Box>
       <ProgramList
         tokens={tokens}
-        onTokenSelect={() => {
+        onTokenSelect={(t) => {
+          history.push(opPage(t));
         }} />
 
     </Container>);

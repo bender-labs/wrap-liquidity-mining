@@ -8,8 +8,10 @@ import AppBar from './AppBar';
 import { SnackbarProvider } from 'notistack';
 import WalletProvider from './features/wallet/WalletContext';
 import ConfigProvider from './runtime/config/ConfigContext';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-import ProgramScreen from './screen/ProgramsScreen';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import ProgramsScreen from './screen/ProgramsScreen';
+import { opPaths } from './routes';
+import ProgramScreen from './screen/ProgramScreen';
 
 const theme = createMuiTheme(themeOptions);
 
@@ -21,10 +23,11 @@ function App() {
           <WalletProvider>
             <CssBaseline />
             <SnackbarProvider autoHideDuration={6000}>
-              <AppBar />
               <Router>
+                <AppBar />
                 <Switch>
-                  <Route path='/' exact component={ProgramScreen} />
+                  <Route path='/' exact component={ProgramsScreen} />
+                  <Route path={opPaths} component={ProgramScreen} />
                 </Switch>
               </Router>
             </SnackbarProvider>

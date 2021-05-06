@@ -2,6 +2,7 @@ import { AppBar, Box, createStyles, makeStyles, Toolbar } from '@material-ui/cor
 import Grid from '@material-ui/core/Grid';
 import React from 'react';
 import logo from './logo.png';
+import { Link } from 'react-router-dom';
 import WalletConnection from './features/wallet/WalletConnection';
 
 const useStyles = makeStyles((theme) =>
@@ -78,7 +79,8 @@ const Render = () => {
             alignItems='center'
           >
             <Grid item>
-              <img src={logo} className={classes.logo} alt='Logo' />
+              <Link to='/'><img src={logo} className={classes.logo} alt='Logo' /></Link>
+
             </Grid>
           </Grid>
 
