@@ -1,20 +1,6 @@
 import { Box, createStyles, makeStyles, PaperProps, styled } from '@material-ui/core';
 import * as React from 'react';
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    card: {
-      padding: theme.spacing(),
-      backgroundColor: '#E5E5E5'
-    },
-    borderBottom: {
-      borderRadius: '0 0 10px 10px'
-    }
-
-  })
-);
-
-
 export type WrapPaperProps = PaperProps;
 
 
@@ -27,6 +13,7 @@ export const PaperHeader = styled('header')((theme) => ({
   paddingLeft: theme.theme.spacing(),
   paddingRight: theme.theme.spacing()
 }));
+
 
 export const PaperTitle = styled('div')({
   justifySelf: 'center',
@@ -53,9 +40,34 @@ export const PaperActions = styled('div')({
   }
 });
 
-export function PaperContent(props: React.HTMLAttributes<HTMLDivElement> & { borderBottom?: boolean }) {
+export const PaperFooter = styled('div')({
+  padding: '10px 0px',
+  textAlign: 'center',
+  borderRadius: '0 0 10px 10px',
+  backgroundColor: '#E5E5E5'
+});
+
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    card: {
+      padding: theme.spacing(),
+      backgroundColor: '#E5E5E5'
+    },
+    borderBottom: {
+      borderRadius: '0 0 10px 10px'
+    },
+    alternate: {
+      backgroundColor: '#C4C4C4'
+    }
+
+  })
+);
+
+export function PaperContent(props: React.HTMLAttributes<HTMLDivElement> & { borderBottom?: boolean, alternate?: boolean }) {
   const classes = useStyles();
-  const { borderBottom = true, ...rest } = props;
+  const { borderBottom = false, alternate = false, ...rest } = props;
+  const borderClass = borderBottom ? classes.borderBottom : '';
+  const alternateClass = alternate ? classes.alternate : '';
   return <Box  {...rest}
-               className={`${classes.card} ${props.className} ${borderBottom ? classes.borderBottom : ''}`} />;
+               className={`${classes.card} ${props.className} ${borderClass} ${alternateClass}`} />;
 }

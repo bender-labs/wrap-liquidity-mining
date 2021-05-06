@@ -48,6 +48,7 @@ export type AmountInputProps = {
   error?: boolean;
   helperText?: string;
   focus?: boolean;
+  disabled?: boolean;
   icon: React.ComponentType<any>;
 };
 
@@ -59,6 +60,7 @@ export default function AmountInput({
                                       error,
                                       helperText,
                                       focus = false,
+                                      disabled = false,
                                       icon: Icon
                                     }: AmountInputProps) {
   const classes = useStyles();
@@ -81,6 +83,7 @@ export default function AmountInput({
         fullWidth
         error={error}
         helperText={helperText}
+        disabled={disabled}
         variant={'filled'}
         InputProps={
           {

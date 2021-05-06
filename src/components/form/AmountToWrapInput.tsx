@@ -17,6 +17,7 @@ type Props = {
   onChange: (amount: BigNumber) => void;
   amountToWrap: BigNumber;
   balanceLoading: boolean;
+  disabled?: boolean;
   icon: React.ComponentType<any>;
 };
 
@@ -27,7 +28,8 @@ export default function AmountToWrapInput({
                                             symbol,
                                             onChange,
                                             balanceLoading,
-                                            icon
+                                            icon,
+                                            disabled
                                           }: Props) {
   const [[error, helperText], setUserError] = useState<[boolean, string]>([
     false,
@@ -42,8 +44,8 @@ export default function AmountToWrapInput({
       return;
     }
 
-    if(balanceLoading) {
-      setUserError([false, 'Your balance is loading…'])
+    if (balanceLoading) {
+      setUserError([false, 'Your balance is loading…']);
       return;
     }
 
@@ -82,6 +84,7 @@ export default function AmountToWrapInput({
       <AmountInput
         value={amountToWrap?.shiftedBy(-decimals).toString()}
         decimals={decimals}
+        disabled={disabled}
         symbol={symbol}
         onChange={handleOnChange}
         error={error}
