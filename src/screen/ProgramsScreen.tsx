@@ -17,7 +17,7 @@ export default function ProgramsScreen() {
   const { tokens } = useConfig();
   return (
     <Container maxWidth={'md'}>
-      <Box mt={2} textAlign={'center'}>
+      <Box my={2} textAlign={'center'}>
         <Typography component={'h1'} variant={'h2'} color={'primary'}>Liquidity Mining Programs</Typography>
         <Typography variant={'subtitle1'} className={classes.subtitle}>Select a program to stake, unstake or claim your
           rewards.</Typography>

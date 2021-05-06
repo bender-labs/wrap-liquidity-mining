@@ -13,13 +13,13 @@ const tokens: { [key in Environment]: TokenConfig[] } = {
       thumbnailUri: 'ipfs://Qma2o69VRZe8aPsuCUN1VRUE5k67vw2mFDXb35uDkqn17o'
     },
     {
-      symbol: 'TEST',
-      name: 'TEST',
-      id: 1,
-      contract: 'KT1L1xYJit22TmuhDXaeng4AZDhRqZwcacNj',
-      poolContract: 'KT1Srr8aWcxPTptoCNrWoXGQdrrNWN6Zx58X',
+      symbol: 'wDAI',
+      name: 'Dai Stable coin',
+      id: 0,
+      contract: 'KT1DJwRryZ11dGDnqmmRtTiSsgxQDY4bw3j4',
+      poolContract: 'KT1FkFC5ovz9UrGoQJLd5hyjmz6aSnASTDsx',
       farmingContract: '',
-      thumbnailUri: 'ipfs://Qma2o69VRZe8aPsuCUN1VRUE5k67vw2mFDXb35uDkqn17o'
+      thumbnailUri: 'ipfs:////QmVov6RtfRNzuQGvGKmhnABUsfCiDKvn31amg8DUxzowtM'
     }
   ]
 };
