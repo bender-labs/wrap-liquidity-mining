@@ -9,7 +9,7 @@ export interface TokenConfig {
   id: number;
   contract: string;
   poolContract: string;
-  miningContract: string;
+  farmingContract: string;
 }
 
 export enum Environment {

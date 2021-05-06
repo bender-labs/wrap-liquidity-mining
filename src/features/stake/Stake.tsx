@@ -16,8 +16,14 @@ export type StakeProps = {
 }
 
 export default function Stake({ token }: StakeProps) {
-  const { loading, balance } = useTokenBalance(token.poolContract, 0);
-  const { amount, changeAmount, stakingStatus } = useStake(balance);
+  const { loading, balance, refresh } = useTokenBalance(token.poolContract, 0);
+  const { amount, changeAmount, stakingStatus, stake } = useStake(token, balance);
+
+  const handleStake = async () => {
+    await stake();
+    await refresh();
+  };
+
   return (
     <>
       <PaperContent>
@@ -42,9 +48,8 @@ export default function Stake({ token }: StakeProps) {
       <PaperFooter>
         {stakingStatus !== StakingStatus.NOT_CONNECTED &&
         <LoadableButton
-          loading={false}
-          onClick={() => {
-          }}
+          loading={stakingStatus === StakingStatus.STAKING}
+          onClick={handleStake}
           disabled={stakingStatus !== StakingStatus.READY}
           text={'Stake'}
           variant={'contained'} />}

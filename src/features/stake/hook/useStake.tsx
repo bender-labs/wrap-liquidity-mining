@@ -2,6 +2,9 @@ import BigNumber from 'bignumber.js';
 import { useWalletContext } from '../../wallet/WalletContext';
 import { ConnectionStatus } from '../../wallet/connectionStatus';
 import { useCallback, useEffect, useState } from 'react';
+import StakingApi from '../api/StakingApi';
+import { TokenConfig } from '../../../runtime/config/types';
+import { useSnackbar } from 'notistack';
 
 export enum StakingStatus {
   NOT_CONNECTED = 'NOT_CONNECTED',
@@ -18,11 +21,12 @@ const nextStatus = (balance: BigNumber, amount: BigNumber) => {
   return StakingStatus.NOT_READY;
 };
 
-export default function useStake(balance: BigNumber) {
+export default function useStake(token: TokenConfig, balance: BigNumber) {
   const { status, library, account } = useWalletContext();
   const [stakingStatus, setStatus] = useState(StakingStatus.NOT_CONNECTED);
   const connected = status === ConnectionStatus.CONNECTED && account !== undefined;
   const [amount, setAmount] = useState(new BigNumber(''));
+  const { enqueueSnackbar } = useSnackbar();
 
 
   useEffect(() => {
@@ -48,5 +52,21 @@ export default function useStake(balance: BigNumber) {
     setStatus(nextStatus(balance, amt));
   }, [balance]);
 
-  return { stakingStatus, amount, changeAmount };
+  const stake = useCallback(async () => {
+    const api = new StakingApi(library!);
+    setStatus(StakingStatus.STAKING);
+    try {
+      await api.stake(account!, amount, token.poolContract, token.farmingContract);
+      setAmount(new BigNumber(''));
+      setStatus(StakingStatus.NOT_READY);
+      enqueueSnackbar('Staking done', { variant: 'success' });
+
+    } catch (error) {
+      enqueueSnackbar(error.description, { variant: 'error' });
+      setStatus(StakingStatus.READY);
+    }
+
+  }, [library, account, amount, token.poolContract, token.farmingContract, enqueueSnackbar]);
+
+  return { stakingStatus, amount, changeAmount, stake };
 }

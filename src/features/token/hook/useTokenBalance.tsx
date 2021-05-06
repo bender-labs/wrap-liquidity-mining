@@ -1,5 +1,5 @@
 import { useWalletContext } from '../../wallet/WalletContext';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ConnectionStatus } from '../../wallet/connectionStatus';
 import BigNumber from 'bignumber.js';
 import { TezosToolkit } from '@taquito/taquito';
@@ -31,20 +31,25 @@ export default function useTokenBalance(address: string, tokenId: number, strate
   const connected = (status === ConnectionStatus.CONNECTED) && account !== undefined;
   const [balance, setBalance] = useState(new BigNumber(''));
   const [loading, setLoading] = useState(false);
+
+  const refresh = useCallback(async () => {
+    if (!connected) {
+      return;
+    }
+    setLoading(true);
+    const result = await fetchers[strategy](library!, account!, address, tokenId);
+    setLoading(false);
+    setBalance(result);
+  }, [strategy, connected, library, account, address, tokenId]);
+
   useEffect(() => {
     if (!connected) {
       setBalance(new BigNumber(''));
       return;
     }
-    const fetchBalance = async () => {
-      setLoading(true);
-      const result = await fetchers[strategy](library!, account!, address, tokenId);
-      setLoading(false);
-      setBalance(result);
-    };
     // noinspection JSIgnoredPromiseFromCall
-    fetchBalance();
-  }, [strategy, connected, library, account, address, tokenId]);
+    refresh();
+  }, [refresh, connected]);
 
-  return { balance, loading, connected };
+  return { balance, loading, refresh, connected };
 }
