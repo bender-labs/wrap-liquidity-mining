@@ -1,7 +1,11 @@
 import { Container, createStyles, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { useHistory, useParams, useRouteMatch } from 'react-router';
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { paths } from '../routes';
+import { Route, Switch } from 'react-router-dom';
+import Stake from '../features/stake/Stake';
+import { TokenConfig } from '../runtime/config/types';
+import { useProgram } from '../features/program/hook/useProgram';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -15,6 +19,13 @@ const useStyles = makeStyles(() =>
     }
   })
 );
+
+function WithToken(Comp: React.FunctionComponent<{ token: TokenConfig }>) {
+  const { token: symbol } = useParams() as { token: string };
+  const { token } = useProgram(symbol);
+  return () => (<Comp token={token} />);
+
+}
 
 export default function ProgramScreen() {
   const { path } = useRouteMatch();
@@ -52,5 +63,8 @@ export default function ProgramScreen() {
         className={classes.tab}
       />
     </Tabs>
+    <Switch>
+      <Route path={paths.STAKE} exact component={WithToken(Stake)} />
+    </Switch>
   </Container>);
 }

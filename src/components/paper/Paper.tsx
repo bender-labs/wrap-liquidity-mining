@@ -3,10 +3,12 @@ import * as React from 'react';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
-
     card: {
       padding: theme.spacing(),
       backgroundColor: '#E5E5E5'
+    },
+    borderBottom: {
+      borderRadius: '0 0 10px 10px'
     }
 
   })
@@ -51,8 +53,9 @@ export const PaperActions = styled('div')({
   }
 });
 
-export function PaperContent(props: React.HTMLAttributes<HTMLDivElement>) {
+export function PaperContent(props: React.HTMLAttributes<HTMLDivElement> & { borderBottom?: boolean }) {
   const classes = useStyles();
-
-  return <Box  {...props} className={`${classes.card} ${props.className}`}  />;
+  const { borderBottom = true, ...rest } = props;
+  return <Box  {...rest}
+               className={`${classes.card} ${props.className} ${borderBottom ? classes.borderBottom : ''}`} />;
 }
