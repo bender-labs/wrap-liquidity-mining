@@ -12,8 +12,8 @@ export default function useStakedBalance(farmingContract: string) {
   const refresh = useCallback(async () => {
     setLoading(true);
     const r = await new FarmingContractApi(library!).balanceOf(farmingContract, account!);
-    setBalance(r);
     setLoading(false);
+    setBalance(r);
   }, [library, farmingContract, account]);
 
   useEffect(() => {

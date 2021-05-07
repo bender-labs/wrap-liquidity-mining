@@ -10,6 +10,8 @@ import WalletConnection from '../wallet/WalletConnection';
 import { TokenConfig } from '../../runtime/config/types';
 import useUnstake, { UnstakeStatus } from './hook/useUnstake';
 import { useCallback } from 'react';
+import useStakedBalance from '../farming/hook/useStakedBalance';
+import useTotalSupply from '../farming/hook/useTotalSupply';
 
 export type WithdrawProps = {
   token: TokenConfig
@@ -17,28 +19,36 @@ export type WithdrawProps = {
 
 export function Unstake({ token }: WithdrawProps) {
   const { unstakeStatus } = useUnstake(token, new BigNumber(0));
+  const { loading: stakedLoading, balance: stakedBalance } = useStakedBalance(token.farmingContract);
+  const { totalSupply, loading: supplyLoading } = useTotalSupply(token.farmingContract);
 
   const handleWithdrawal = useCallback(() => {
 
   }, []);
 
   return (<>
+    {stakedBalance.toString(10)}
     <PaperContent>
       <AmountToWrapInput
-        balance={new BigNumber('')}
+        balance={stakedBalance}
         decimals={6}
         symbol={'LP Token'}
         onChange={() => {
         }}
         amountToWrap={new BigNumber('')}
-        balanceLoading={false}
-        disabled={false}
+        balanceLoading={stakedLoading}
+        disabled={unstakeStatus === UnstakeStatus.NOT_CONNECTED}
         icon={QuipuIcon}
       />
     </PaperContent>
     <PaperContent alternate>
       <LabelAndValue label={'Farming contract'} value={token.farmingContract} />
-      <LabelAndAsset label={'Total staked'} value={new BigNumber(10)} decimals={6} symbol={'LP Token'} />
+      <LabelAndAsset label={'Total staked'}
+                     emptyState={supplyLoading}
+                     emptyStatePlaceHolder={'Loading…'}
+                     value={totalSupply}
+                     decimals={6}
+                     symbol={'LP Token'} />
     </PaperContent>
     <AssetSummary decimals={6} symbol={'LP Token'} label={'Your new share will be'} value={new BigNumber(0)} />
     <PaperFooter>
