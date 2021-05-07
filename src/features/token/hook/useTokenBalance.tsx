@@ -5,7 +5,6 @@ import BigNumber from 'bignumber.js';
 import { TezosToolkit } from '@taquito/taquito';
 
 enum BalanceStrategy {
-  STORAGE = 'STORAGE',
   VIEW = 'VIEW',
   LAMBDA = 'LAMBDA'
 }
@@ -22,7 +21,6 @@ const fetchByLambda: BalanceFetcher = async (library, owner, address, tokenId) =
 
 const fetchers: { [key in keyof typeof BalanceStrategy]: BalanceFetcher } = {
   'LAMBDA': fetchByLambda,
-  'STORAGE': fetchByLambda,
   'VIEW': fetchByLambda
 };
 

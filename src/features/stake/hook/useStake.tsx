@@ -2,9 +2,9 @@ import BigNumber from 'bignumber.js';
 import { useWalletContext } from '../../wallet/WalletContext';
 import { ConnectionStatus } from '../../wallet/connectionStatus';
 import { useCallback, useEffect, useState } from 'react';
-import StakingApi from '../api/StakingApi';
 import { TokenConfig } from '../../../runtime/config/types';
 import { useSnackbar } from 'notistack';
+import FarmingContractApi from '../../farming/api/FarmingContractApi';
 
 export enum StakingStatus {
   NOT_CONNECTED = 'NOT_CONNECTED',
@@ -52,7 +52,7 @@ export default function useStake(token: TokenConfig, balance: BigNumber) {
   }, [balance]);
 
   const stake = useCallback(async () => {
-    const api = new StakingApi(library!);
+    const api = new FarmingContractApi(library!);
     setStatus(StakingStatus.STAKING);
     try {
       await api.stake(account!, amount, token.poolContract, token.farmingContract);
