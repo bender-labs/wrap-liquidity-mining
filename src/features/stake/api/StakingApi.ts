@@ -23,6 +23,7 @@ export default class StakingApi {
       .withTransfer(addOperator)
       .withTransfer(deposit)
       .send();
+    await opg.receipt();
     return opg.opHash;
   }
 }
