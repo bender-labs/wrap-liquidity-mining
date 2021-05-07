@@ -13,7 +13,13 @@ export type ProgramListProps = {
 
 const useStyle = makeStyles(() => createStyles({
   main: {
-    borderRadius: '10px 10px 10px 10px'
+    borderRadius: '10px 10px 10px 10px',
+    backgroundColor: 'white',
+    transition: 'background-color 1s ease',
+    '&:hover': {
+      backgroundColor: '#FFD000'
+    },
+
   },
   item: {
     '&:hover': {
@@ -24,6 +30,7 @@ const useStyle = makeStyles(() => createStyles({
     '& img': { width: 60, height: 60, marginRight: 5, verticalAlign: 'middle' },
     '& :first-child': { left: '0', position: 'relative' },
     '& :last-child': { marginLeft: '-20px' }
+
   }
 }));
 

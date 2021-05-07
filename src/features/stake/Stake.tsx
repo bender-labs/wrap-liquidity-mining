@@ -27,7 +27,7 @@ export default function Stake({ token }: StakeProps) {
 
   return (
     <>
-      <PaperContent>
+      <PaperContent >
         <AmountToWrapInput
           balance={balance}
           decimals={6}
