@@ -3,61 +3,54 @@ import AmountToWrapInput from '../../components/form/AmountToWrapInput';
 import QuipuIcon from '../../components/icons/QuipuIcon';
 import LabelAndValue from '../../components/form/LabelAndValue';
 import LabelAndAsset from '../../components/form/LabelAndAsset';
-import BigNumber from 'bignumber.js';
 import AssetSummary from '../../components/form/AssetSummary';
 import LoadableButton from '../../components/button/LoadableButton';
 import WalletConnection from '../wallet/WalletConnection';
-import { TokenConfig } from '../../runtime/config/types';
 import useUnstake, { UnstakeStatus } from './hook/useUnstake';
 import { useCallback } from 'react';
-import useStakedBalance from '../farming/hook/useStakedBalance';
-import useTotalSupply from '../farming/hook/useTotalSupply';
+import { FarmingContractActionsProps } from '../program/types';
 
-export type WithdrawProps = {
-  token: TokenConfig
-}
 
-export function Unstake({ token }: WithdrawProps) {
-  const { unstakeStatus } = useUnstake(token, new BigNumber(0));
-  const { loading: stakedLoading, balance: stakedBalance } = useStakedBalance(token.farmingContract);
-  const { totalSupply, loading: supplyLoading } = useTotalSupply(token.farmingContract);
+export function Unstake({ program, onApply, contractBalances }: FarmingContractActionsProps) {
 
-  const handleWithdrawal = useCallback(() => {
+  const { unstakeStatus, amount, changeAmount, unstake } = useUnstake(program, contractBalances.staked);
 
-  }, []);
+  const handleWithdrawal = useCallback(async () => {
+    await unstake();
+    onApply();
+  }, [onApply, unstake]);
 
   return (<>
-    {stakedBalance.toString(10)}
     <PaperContent>
       <AmountToWrapInput
-        balance={stakedBalance}
+        balance={contractBalances.staked}
         decimals={6}
         symbol={'LP Token'}
-        onChange={() => {
-        }}
-        amountToWrap={new BigNumber('')}
-        balanceLoading={stakedLoading}
-        disabled={unstakeStatus === UnstakeStatus.NOT_CONNECTED}
+        onChange={changeAmount}
+        amountToWrap={amount}
+        balanceLoading={contractBalances.loading}
+        disabled={unstakeStatus === UnstakeStatus.NOT_CONNECTED || contractBalances.staked.isZero() || contractBalances.staked.isNaN()}
         icon={QuipuIcon}
       />
     </PaperContent>
     <PaperContent alternate>
-      <LabelAndValue label={'Farming contract'} value={token.farmingContract} />
+      <LabelAndValue label={'Farming contract'} value={program.farmingContract} />
       <LabelAndAsset label={'Total staked'}
-                     emptyState={supplyLoading}
+                     emptyState={contractBalances.loading}
                      emptyStatePlaceHolder={'Loading…'}
-                     value={totalSupply}
+                     value={contractBalances.totalSupply}
                      decimals={6}
                      symbol={'LP Token'} />
     </PaperContent>
-    <AssetSummary decimals={6} symbol={'LP Token'} label={'Your new share will be'} value={new BigNumber(0)} />
+    <AssetSummary decimals={6} symbol={'LP Token'} label={'Your new share will be'}
+                  value={contractBalances.staked.minus(amount)} />
     <PaperFooter>
       {unstakeStatus !== UnstakeStatus.NOT_CONNECTED &&
       <LoadableButton
         loading={unstakeStatus === UnstakeStatus.STAKING}
         onClick={handleWithdrawal}
         disabled={unstakeStatus !== UnstakeStatus.READY}
-        text={'Withdraw'}
+        text={'Unstake'}
         variant={'contained'} />}
       {unstakeStatus === UnstakeStatus.NOT_CONNECTED && <WalletConnection withConnectionStatus={false} />}
     </PaperFooter>

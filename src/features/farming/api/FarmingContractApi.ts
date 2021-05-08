@@ -27,6 +27,13 @@ export default class FarmingContractApi {
     return opg.opHash;
   }
 
+  public async unstake(amount: BigNumber, farmingContract: string): Promise<string> {
+    const fContract = await this.library.wallet.at(farmingContract);
+    const opg = await fContract.methods.withdraw(amount.toString(10)).send();
+    await opg.receipt();
+    return opg.opHash;
+  }
+
   private async getStorage(farmingContract: string): Promise<Record<string, any>> {
     const fContract = await this.library.contract.at(farmingContract);
     return await fContract.storage() as Record<string, any>;
@@ -37,16 +44,19 @@ export default class FarmingContractApi {
     return new BigNumber(storage['farmLpTokenBalance'] as number);
   }
 
-  public async balanceOf(farmingContract: string, owner: string): Promise<BigNumber> {
-    const storage = await this.getStorage(farmingContract);
+  private static async _balanceOf(storage: Record<string, any>, owner: string): Promise<BigNumber> {
     try {
       const delegator = await storage['delegators'].get(owner);
       return delegator['lpTokenBalance'] as BigNumber;
-    }
-    catch {
+    } catch {
       return new BigNumber(0);
     }
+  }
 
-
+  public async extractBalances(farmingContract: string, owner: string): Promise<{ totalSupply: BigNumber, staked: BigNumber }> {
+    const storage = await this.getStorage(farmingContract);
+    const totalSupply = new BigNumber(storage['farmLpTokenBalance'] as number);
+    const staked = await FarmingContractApi._balanceOf(storage, owner);
+    return { totalSupply, staked };
   }
 }

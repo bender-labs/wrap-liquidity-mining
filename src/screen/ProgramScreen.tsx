@@ -6,7 +6,11 @@ import { Route, Switch } from 'react-router-dom';
 import Stake from '../features/stake/Stake';
 import { TokenConfig } from '../runtime/config/types';
 import { useProgram } from '../features/program/hook/useProgram';
+import useFarmingContract from '../features/farming/hook/useFarmingContract';
+import { FarmingContractActionsProps } from '../features/program/types';
+import BigNumber from 'bignumber.js';
 import { Unstake } from '../features/unstake/Unstake';
+import useTokenBalance from '../features/token/hook/useTokenBalance';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -21,24 +25,39 @@ const useStyles = makeStyles(() =>
   })
 );
 
-function WithToken(Comp: React.FunctionComponent<{ token: TokenConfig }>) {
-  const { token: symbol } = useParams() as { token: string };
-  const { token } = useProgram(symbol);
-  return () => (<Comp token={token} />);
+function WithProgram(program: TokenConfig,
+                     onApply: () => void,
+                     contractBalances: { totalSupply: BigNumber; staked: BigNumber; loading: boolean },
+                     userBalance: { value: BigNumber; loading: boolean },
+                     Comp: React.FunctionComponent<FarmingContractActionsProps>) {
+  return () => (
+    <Comp onApply={onApply} program={program} balance={userBalance} contractBalances={contractBalances} />);
 
 }
 
 export default function ProgramScreen() {
   const { path } = useRouteMatch();
-  const { token } = useParams() as { token: string };
+  const { token: symbol } = useParams() as { token: string };
+  const { program } = useProgram(symbol);
+  const { contractBalances, contractLoading, refreshFarmingContract } = useFarmingContract(program.farmingContract);
+  const { balance, loading, refresh } = useTokenBalance(program.poolContract, program.id);
+
+
   const history = useHistory();
   const classes = useStyles();
   const onTabChange = useCallback(
     (event: React.ChangeEvent<{}>, newPath: string) => {
-      history.push(newPath.replace(':token', token));
+      history.push(newPath.replace(':token', program.symbol));
     },
-    [history, token]
+    [history, program]
   );
+
+  const onApply = () => {
+    // noinspection JSIgnoredPromiseFromCall
+    refreshFarmingContract();
+    // noinspection JSIgnoredPromiseFromCall
+    refresh();
+  };
 
   return (<Container maxWidth='md'>
     <Tabs
@@ -65,8 +84,16 @@ export default function ProgramScreen() {
       />
     </Tabs>
     <Switch>
-      <Route path={paths.STAKE} exact component={WithToken(Stake)} />
-      <Route path={paths.UNSTAKE} exact component={WithToken(Unstake)} />
+      <Route path={paths.STAKE} exact
+             component={WithProgram(program, onApply, {
+               ...contractBalances,
+               loading: contractLoading
+             }, { value: balance, loading }, Stake)} />
+      <Route path={paths.UNSTAKE} exact
+             component={WithProgram(program, onApply, {
+               ...contractBalances,
+               loading: contractLoading
+             }, { value: balance, loading }, Unstake)} />
     </Switch>
   </Container>);
 }

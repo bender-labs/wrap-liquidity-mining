@@ -15,5 +15,5 @@ export function useProgram(symbol: string) {
     }
   }, [history, token]);
 
-  return { token: token! };
+  return { program: token! };
 }
