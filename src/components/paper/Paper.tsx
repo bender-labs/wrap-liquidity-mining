@@ -1,8 +1,5 @@
-import { Box, createStyles, makeStyles, PaperProps, styled } from '@material-ui/core';
+import { Box, createStyles, makeStyles, styled } from '@material-ui/core';
 import * as React from 'react';
-
-export type WrapPaperProps = PaperProps;
-
 
 export const PaperHeader = styled('header')((theme) => ({
   display: 'flex',
@@ -11,7 +8,11 @@ export const PaperHeader = styled('header')((theme) => ({
   paddingTop: theme.theme.spacing(),
   paddingBottom: theme.theme.spacing(),
   paddingLeft: theme.theme.spacing(),
-  paddingRight: theme.theme.spacing()
+  paddingRight: theme.theme.spacing(),
+  backgroundColor: '#E5E5E5',
+  fontSize: '20px',
+  fontWeight: 'bold',
+  boxShadow: 'inset 0 -7px 9px -7px rgba(0,0,0,0.4)'
 }));
 
 

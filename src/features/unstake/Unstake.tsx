@@ -5,9 +5,10 @@ import AssetSummary from '../../components/form/AssetSummary';
 import LoadableButton from '../../components/button/LoadableButton';
 import WalletConnection from '../wallet/WalletConnection';
 import useUnstake, { UnstakeStatus } from './hook/useUnstake';
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { FarmingContractActionsProps } from '../farming/types';
 import FarmingContractInfo from '../farming/components/FarmingContractInfo';
+import FarmingContractHeader from '../farming/components/FarmingContractHeader';
 
 
 export function Unstake({ program, onApply, contractBalances, balance }: FarmingContractActionsProps) {
@@ -20,6 +21,7 @@ export function Unstake({ program, onApply, contractBalances, balance }: Farming
   }, [onApply, unstake]);
 
   return (<>
+    <FarmingContractHeader program={program}/>
     <PaperContent>
       <AmountToWrapInput
         balance={contractBalances.staked}

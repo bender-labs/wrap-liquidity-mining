@@ -5,9 +5,10 @@ import LoadableButton from '../../components/button/LoadableButton';
 import AssetSummary from '../../components/form/AssetSummary';
 import useStake, { StakingStatus } from './hook/useStake';
 import WalletConnection from '../wallet/WalletConnection';
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { FarmingContractActionsProps } from '../farming/types';
 import FarmingContractInfo from '../farming/components/FarmingContractInfo';
+import FarmingContractHeader from '../farming/components/FarmingContractHeader';
 
 
 export default function Stake({ program, contractBalances, onApply, balance }: FarmingContractActionsProps) {
@@ -20,6 +21,7 @@ export default function Stake({ program, contractBalances, onApply, balance }: F
 
   return (
     <>
+      <FarmingContractHeader program={program} />
       <PaperContent>
         <AmountToWrapInput
           balance={balance.value}
