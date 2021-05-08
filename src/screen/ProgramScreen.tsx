@@ -7,10 +7,11 @@ import Stake from '../features/stake/Stake';
 import { TokenConfig } from '../runtime/config/types';
 import { useProgram } from '../features/program/hook/useProgram';
 import useFarmingContract from '../features/farming/hook/useFarmingContract';
-import { FarmingContractActionsProps } from '../features/program/types';
+import { FarmingContractActionsProps } from '../features/farming/types';
 import BigNumber from 'bignumber.js';
 import { Unstake } from '../features/unstake/Unstake';
 import useTokenBalance from '../features/token/hook/useTokenBalance';
+import Claim from '../features/claim/Claim';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -94,6 +95,12 @@ export default function ProgramScreen() {
                ...contractBalances,
                loading: contractLoading
              }, { value: balance, loading }, Unstake)} />
+
+      <Route path={paths.CLAIM} exact
+             component={WithProgram(program, onApply, {
+               ...contractBalances,
+               loading: contractLoading
+             }, { value: balance, loading }, Claim)} />
     </Switch>
   </Container>);
 }

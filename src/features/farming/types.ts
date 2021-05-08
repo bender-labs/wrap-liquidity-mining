@@ -1,7 +1,7 @@
 import { TokenConfig } from '../../runtime/config/types';
 import BigNumber from 'bignumber.js';
 
-export interface FarmingContractActionsProps {
+export interface FarmingContractInfoProps {
   program: TokenConfig;
   contractBalances: {
     totalSupply: BigNumber;
@@ -13,5 +13,8 @@ export interface FarmingContractActionsProps {
     value: BigNumber;
     loading: boolean;
   }
+}
+
+export interface FarmingContractActionsProps extends FarmingContractInfoProps {
   onApply: () => void
 }

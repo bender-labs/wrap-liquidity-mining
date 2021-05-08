@@ -10,7 +10,7 @@ export enum UnstakeStatus {
   NOT_CONNECTED = 'NOT_CONNECTED',
   NOT_READY = 'NOT_READY',
   READY = 'READY',
-  STAKING = 'STAKING',
+  UNSTAKING = 'UNSTAKING',
 }
 
 const nextStatus = (balance: BigNumber, amount: BigNumber) => {
@@ -52,12 +52,12 @@ export default function useUnstake(token: TokenConfig, balance: BigNumber) {
 
   const unstake = useCallback(async () => {
     const api = new FarmingContractApi(library!);
-    setStatus(UnstakeStatus.STAKING);
+    setStatus(UnstakeStatus.UNSTAKING);
     try {
       await api.unstake(amount, token.farmingContract);
       setAmount(new BigNumber(''));
       setStatus(UnstakeStatus.NOT_READY);
-      enqueueSnackbar('Staking done', { variant: 'success' });
+      enqueueSnackbar('Unstaking done', { variant: 'success' });
 
     } catch (error) {
       enqueueSnackbar(error.description, { variant: 'error' });

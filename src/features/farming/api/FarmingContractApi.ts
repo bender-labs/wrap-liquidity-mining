@@ -72,7 +72,7 @@ export default class FarmingContractApi {
 
   private async delegatorReward(storage: Record<string, any>, owner: string) {
     const delegatorRecord = await storage['delegators'].get(owner);
-    if(!delegatorRecord) {
+    if (!delegatorRecord) {
       return new BigNumber(0);
     }
     const accRewardPerShareStart = delegatorRecord['accumulatedRewardPerShareStart'] as BigNumber;
@@ -89,5 +89,12 @@ export default class FarmingContractApi {
     const staked = await FarmingContractApi._balanceOf(storage, owner);
     const reward = await this.delegatorReward(storage, owner);
     return { totalSupply, staked, reward };
+  }
+
+  public async claim(farmingContract: string): Promise<string> {
+    const fContract = await this.library.wallet.at(farmingContract);
+    const opg = await fContract.methods.claim({}).send();
+    await opg.receipt();
+    return opg.opHash;
   }
 }

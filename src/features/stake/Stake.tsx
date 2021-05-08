@@ -1,14 +1,13 @@
 import { PaperContent, PaperFooter } from '../../components/paper/Paper';
 import AmountToWrapInput from '../../components/form/AmountToWrapInput';
 import QuipuIcon from '../../components/icons/QuipuIcon';
-import LabelAndValue from '../../components/form/LabelAndValue';
-import LabelAndAsset from '../../components/form/LabelAndAsset';
 import LoadableButton from '../../components/button/LoadableButton';
 import AssetSummary from '../../components/form/AssetSummary';
 import useStake, { StakingStatus } from './hook/useStake';
 import WalletConnection from '../wallet/WalletConnection';
 import { useCallback } from 'react';
-import { FarmingContractActionsProps } from '../program/types';
+import { FarmingContractActionsProps } from '../farming/types';
+import FarmingContractInfo from '../farming/components/FarmingContractInfo';
 
 
 export default function Stake({ program, contractBalances, onApply, balance }: FarmingContractActionsProps) {
@@ -33,30 +32,7 @@ export default function Stake({ program, contractBalances, onApply, balance }: F
           icon={QuipuIcon}
         />
       </PaperContent>
-      <PaperContent alternate>
-        <LabelAndValue label={'Pool contract'} value={program.poolContract} />
-        <LabelAndAsset label={'Total staked'}
-                       emptyState={contractBalances.loading}
-                       emptyStatePlaceHolder={'Loading…'}
-                       value={contractBalances.totalSupply}
-                       decimals={6}
-                       symbol={'LP Token'} />
-        <LabelAndAsset
-          label={'Your current share'}
-          value={contractBalances.staked}
-          emptyState={contractBalances.loading}
-          emptyStatePlaceHolder={'Loading…'}
-          decimals={6}
-          symbol={'LP Token'} />
-        <LabelAndAsset
-          label={'Your pending reward'}
-          value={contractBalances.reward}
-          emptyState={contractBalances.loading}
-          emptyStatePlaceHolder={'Loading…'}
-          decimals={program.decimals}
-          symbol={program.symbol} />
-
-      </PaperContent>
+      <FarmingContractInfo program={program} contractBalances={contractBalances} balance={balance} />
       <AssetSummary decimals={6} symbol={'LP Token'} label={'Your new share will be'}
                     value={amount.plus(contractBalances.staked)} />
       <PaperFooter>

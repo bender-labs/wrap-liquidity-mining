@@ -1,17 +1,16 @@
 import { PaperContent, PaperFooter } from '../../components/paper/Paper';
 import AmountToWrapInput from '../../components/form/AmountToWrapInput';
 import QuipuIcon from '../../components/icons/QuipuIcon';
-import LabelAndValue from '../../components/form/LabelAndValue';
-import LabelAndAsset from '../../components/form/LabelAndAsset';
 import AssetSummary from '../../components/form/AssetSummary';
 import LoadableButton from '../../components/button/LoadableButton';
 import WalletConnection from '../wallet/WalletConnection';
 import useUnstake, { UnstakeStatus } from './hook/useUnstake';
 import { useCallback } from 'react';
-import { FarmingContractActionsProps } from '../program/types';
+import { FarmingContractActionsProps } from '../farming/types';
+import FarmingContractInfo from '../farming/components/FarmingContractInfo';
 
 
-export function Unstake({ program, onApply, contractBalances }: FarmingContractActionsProps) {
+export function Unstake({ program, onApply, contractBalances, balance }: FarmingContractActionsProps) {
 
   const { unstakeStatus, amount, changeAmount, unstake } = useUnstake(program, contractBalances.staked);
 
@@ -33,28 +32,13 @@ export function Unstake({ program, onApply, contractBalances }: FarmingContractA
         icon={QuipuIcon}
       />
     </PaperContent>
-    <PaperContent alternate>
-      <LabelAndValue label={'Farming contract'} value={program.farmingContract} />
-      <LabelAndAsset label={'Total staked'}
-                     emptyState={contractBalances.loading}
-                     emptyStatePlaceHolder={'Loading…'}
-                     value={contractBalances.totalSupply}
-                     decimals={6}
-                     symbol={'LP Token'} />
-      <LabelAndAsset
-        label={'Your pending reward'}
-        value={contractBalances.reward}
-        emptyState={contractBalances.loading}
-        emptyStatePlaceHolder={'Loading…'}
-        decimals={program.decimals}
-        symbol={program.symbol} />
-    </PaperContent>
+    <FarmingContractInfo program={program} contractBalances={contractBalances} balance={balance} />
     <AssetSummary decimals={6} symbol={'LP Token'} label={'Your new share will be'}
                   value={contractBalances.staked.minus(amount)} />
     <PaperFooter>
       {unstakeStatus !== UnstakeStatus.NOT_CONNECTED &&
       <LoadableButton
-        loading={unstakeStatus === UnstakeStatus.STAKING}
+        loading={unstakeStatus === UnstakeStatus.UNSTAKING}
         onClick={handleWithdrawal}
         disabled={unstakeStatus !== UnstakeStatus.READY}
         text={'Unstake'}
