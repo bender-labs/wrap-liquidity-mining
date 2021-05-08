@@ -6,6 +6,7 @@ export interface FarmingContractActionsProps {
   contractBalances: {
     totalSupply: BigNumber;
     staked: BigNumber;
+    reward: BigNumber;
     loading: boolean;
   },
   balance: {

@@ -27,7 +27,7 @@ const useStyles = makeStyles(() =>
 
 function WithProgram(program: TokenConfig,
                      onApply: () => void,
-                     contractBalances: { totalSupply: BigNumber; staked: BigNumber; loading: boolean },
+                     contractBalances: { totalSupply: BigNumber; staked: BigNumber; reward: BigNumber; loading: boolean },
                      userBalance: { value: BigNumber; loading: boolean },
                      Comp: React.FunctionComponent<FarmingContractActionsProps>) {
   return () => (

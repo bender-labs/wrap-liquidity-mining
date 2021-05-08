@@ -8,6 +8,7 @@ export interface TokenConfig {
   thumbnailUri: string;
   id: number;
   contract: string;
+  decimals: number;
   poolContract: string;
   farmingContract: string;
 }

@@ -48,6 +48,13 @@ export default function Stake({ program, contractBalances, onApply, balance }: F
           emptyStatePlaceHolder={'Loading…'}
           decimals={6}
           symbol={'LP Token'} />
+        <LabelAndAsset
+          label={'Your pending reward'}
+          value={contractBalances.reward}
+          emptyState={contractBalances.loading}
+          emptyStatePlaceHolder={'Loading…'}
+          decimals={program.decimals}
+          symbol={program.symbol} />
 
       </PaperContent>
       <AssetSummary decimals={6} symbol={'LP Token'} label={'Your new share will be'}

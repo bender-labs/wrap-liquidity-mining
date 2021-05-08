@@ -53,10 +53,41 @@ export default class FarmingContractApi {
     }
   }
 
-  public async extractBalances(farmingContract: string, owner: string): Promise<{ totalSupply: BigNumber, staked: BigNumber }> {
+  private async updatePool(storage: Record<string, any>) {
+    const lastBlockUpdate = storage['farm']['lastBlockUpdate'] as BigNumber;
+    const { level: currentLevel } = await this.library.rpc.getBlockHeader();
+    const multiplier = new BigNumber(currentLevel).minus(lastBlockUpdate);
+
+    const outstandingReward = multiplier.multipliedBy(storage['farm']['plannedRewards']['rewardPerBlock'] as BigNumber);
+
+    const claimedRewards = (storage['farm']['claimedRewards']['paid'] as BigNumber).plus(storage['farm']['claimedRewards']['unpaid']);
+    const totalRewards = outstandingReward.plus(claimedRewards);
+    const plannedRewards = (storage['farm']['plannedRewards']['rewardPerBlock'] as BigNumber).multipliedBy(storage['farm']['plannedRewards']['totalBlocks'] as BigNumber);
+    const totalRewardsExhausted = totalRewards.isGreaterThan(plannedRewards);
+
+    const reward = totalRewardsExhausted ? plannedRewards.minus(claimedRewards) : outstandingReward;
+
+    return (storage['farm']['accumulatedRewardPerShare'] as BigNumber).plus(reward.multipliedBy(1000000).div(storage['farmLpTokenBalance']));
+  }
+
+  private async delegatorReward(storage: Record<string, any>, owner: string) {
+    const delegatorRecord = await storage['delegators'].get(owner);
+    if(!delegatorRecord) {
+      return new BigNumber(0);
+    }
+    const accRewardPerShareStart = delegatorRecord['accumulatedRewardPerShareStart'] as BigNumber;
+    const accRewardPerShareEnd = await this.updatePool(storage);
+    const accumulatedRewardPerShare = accRewardPerShareEnd.minus(accRewardPerShareStart);
+    const delegatorReward = accumulatedRewardPerShare.multipliedBy(delegatorRecord['lpTokenBalance']);
+    // remove precision
+    return delegatorReward.div(1000000).integerValue();
+  }
+
+  public async extractBalances(farmingContract: string, owner: string): Promise<{ totalSupply: BigNumber, staked: BigNumber, reward: BigNumber }> {
     const storage = await this.getStorage(farmingContract);
     const totalSupply = new BigNumber(storage['farmLpTokenBalance'] as number);
     const staked = await FarmingContractApi._balanceOf(storage, owner);
-    return { totalSupply, staked };
+    const reward = await this.delegatorReward(storage, owner);
+    return { totalSupply, staked, reward };
   }
 }

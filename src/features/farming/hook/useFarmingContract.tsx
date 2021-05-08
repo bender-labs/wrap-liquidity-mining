@@ -4,7 +4,7 @@ import { useWalletContext } from '../../wallet/WalletContext';
 import FarmingContractApi from '../api/FarmingContractApi';
 import { ConnectionStatus } from '../../wallet/connectionStatus';
 
-const initialState = { totalSupply: new BigNumber(''), staked: new BigNumber('') };
+const initialState = { totalSupply: new BigNumber(''), staked: new BigNumber(''), reward: new BigNumber('') };
 
 export default function useFarmingContract(farmingContract: string) {
   const [loading, setLoading] = useState(false);
