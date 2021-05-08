@@ -2,7 +2,7 @@ import { useWalletContext } from '../../wallet/WalletContext';
 import { useCallback, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import FarmingContractApi from '../../farming/api/FarmingContractApi';
-import { TokenConfig } from '../../../runtime/config/types';
+import { ProgramConfig } from '../../../runtime/config/types';
 import { ConnectionStatus } from '../../wallet/connectionStatus';
 
 export enum ClaimStatus {
@@ -12,7 +12,7 @@ export enum ClaimStatus {
 }
 
 
-export default function useClaim(token: TokenConfig) {
+export default function useClaim(token: ProgramConfig) {
   const { status, library, account } = useWalletContext();
   const [claimStatus, setStatus] = useState(ClaimStatus.NOT_CONNECTED);
   const connected = status === ConnectionStatus.CONNECTED && account !== undefined;

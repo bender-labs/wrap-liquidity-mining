@@ -17,7 +17,7 @@ export default function Claim({ program, contractBalances, balance, onApply }: F
 
   return (<>
     <FarmingContractInfo program={program} contractBalances={contractBalances} balance={balance} />
-    <AssetSummary decimals={8} symbol={'WRAP'} label={'Your will receive (estimate)'}
+    <AssetSummary decimals={program.reward.decimals} symbol={program.reward.symbol} label={'Your will receive (estimate)'}
                   value={contractBalances.reward} />
     <PaperFooter>
       {claimStatus !== ClaimStatus.NOT_CONNECTED &&

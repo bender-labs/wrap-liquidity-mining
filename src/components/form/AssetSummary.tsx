@@ -63,7 +63,7 @@ export default function AssetSummary({
           displayType="text"
           suffix={` ${symbol}`}
           {...formatOptions}
-          value={value.shiftedBy(-decimals).toString()}
+          value={value.shiftedBy(-decimals).toString(10)}
         />
       </div>
     </div>

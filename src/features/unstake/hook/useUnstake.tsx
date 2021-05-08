@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { TokenConfig } from '../../../runtime/config/types';
+import { ProgramConfig } from '../../../runtime/config/types';
 import { useWalletContext } from '../../wallet/WalletContext';
 import { useCallback, useEffect, useState } from 'react';
 import { ConnectionStatus } from '../../wallet/connectionStatus';
@@ -20,7 +20,7 @@ const nextStatus = (balance: BigNumber, amount: BigNumber) => {
   return UnstakeStatus.NOT_READY;
 };
 
-export default function useUnstake(token: TokenConfig, balance: BigNumber) {
+export default function useUnstake(token: ProgramConfig, balance: BigNumber) {
   const { status, library, account } = useWalletContext();
   const [unstakeStatus, setStatus] = useState(UnstakeStatus.NOT_CONNECTED);
   const connected = status === ConnectionStatus.CONNECTED && account !== undefined;

@@ -1,15 +1,22 @@
 import { NetworkType } from '@airgap/beacon-sdk';
-import tokens from './tokens';
+import programs from './programs';
 
-
-export interface TokenConfig {
-  symbol: string;
-  name: string;
-  thumbnailUri: string;
+export interface Token {
   id: number;
   contract: string;
+  thumbnailUri: string;
   decimals: number;
-  poolContract: string;
+  symbol: string;
+  name: string;
+}
+
+export interface ProgramConfig {
+  pool: {
+    contract: string,
+    base: Token,
+    quote: 'xtz'
+  },
+  reward: Token,
   farmingContract: string;
 }
 
@@ -25,10 +32,8 @@ export interface Config {
     networkId: NetworkType;
     networkName: string;
   };
-  tokens: TokenConfig[]
+  programs: ProgramConfig[]
 }
-
-export type TezosConfig = Config['tezos'];
 
 const env = Environment[(process.env.REACT_APP_WRAP_ENVIRONMENT || 'TESTNET') as keyof typeof Environment];
 export const initialConfig: Config = {
@@ -38,5 +43,5 @@ export const initialConfig: Config = {
     networkId: process.env.REACT_APP_TZ_NETWORK_ID! as NetworkType,
     networkName: process.env.REACT_APP_TZ_NETWORK_NAME!
   },
-  tokens: tokens[env]
+  programs: programs[env]
 };

@@ -7,7 +7,7 @@ import { PaperContent } from '../../../components/paper/Paper';
 export default function FarmingContractInfo({ program, contractBalances }: FarmingContractInfoProps) {
 
   return (<PaperContent alternate>
-    <LabelAndValue label={'Pool contract'} value={program.poolContract} />
+    <LabelAndValue label={'Pool contract'} value={program.pool.contract} />
     <LabelAndValue label={'Farming contract'} value={program.farmingContract} />
     <LabelAndAsset label={'Total staked'}
                    emptyState={contractBalances.loading}
@@ -27,7 +27,7 @@ export default function FarmingContractInfo({ program, contractBalances }: Farmi
       value={contractBalances.reward}
       emptyState={contractBalances.loading}
       emptyStatePlaceHolder={'Loading…'}
-      decimals={8}
+      decimals={program.reward.decimals}
       symbol={'WRAP'} />
 
   </PaperContent>);

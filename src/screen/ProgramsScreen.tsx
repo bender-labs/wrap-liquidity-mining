@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => createStyles({
 export default function ProgramsScreen() {
   const classes = useStyles();
   const history = useHistory();
-  const { tokens } = useConfig();
+  const { programs } = useConfig();
   return (
     <Container maxWidth={'md'}>
       <Box my={2} textAlign={'center'}>
@@ -23,8 +23,8 @@ export default function ProgramsScreen() {
           rewards.</Typography>
       </Box>
       <ProgramList
-        tokens={tokens}
-        onTokenSelect={(t) => {
+        programs={programs}
+        onProgramSelect={(t) => {
           history.push(opPage(t));
         }} />
 

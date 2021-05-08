@@ -41,7 +41,8 @@ export const PaperActions = styled('div')({
 });
 
 export const PaperFooter = styled('div')({
-  padding: '10px 0px',
+  minHeight: '60px',
+  padding: '20px 90px',
   textAlign: 'center',
   borderRadius: '0 0 10px 10px',
   backgroundColor: '#E5E5E5'

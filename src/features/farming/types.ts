@@ -1,8 +1,8 @@
-import { TokenConfig } from '../../runtime/config/types';
+import { ProgramConfig } from '../../runtime/config/types';
 import BigNumber from 'bignumber.js';
 
 export interface FarmingContractInfoProps {
-  program: TokenConfig;
+  program: ProgramConfig;
   contractBalances: {
     totalSupply: BigNumber;
     staked: BigNumber;

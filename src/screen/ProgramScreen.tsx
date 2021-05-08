@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import { paths } from '../routes';
 import { Route, Switch } from 'react-router-dom';
 import Stake from '../features/stake/Stake';
-import { TokenConfig } from '../runtime/config/types';
+import { ProgramConfig } from '../runtime/config/types';
 import { useProgram } from '../features/program/hook/useProgram';
 import useFarmingContract from '../features/farming/hook/useFarmingContract';
 import { FarmingContractActionsProps } from '../features/farming/types';
@@ -26,7 +26,7 @@ const useStyles = makeStyles(() =>
   })
 );
 
-function WithProgram(program: TokenConfig,
+function WithProgram(program: ProgramConfig,
                      onApply: () => void,
                      contractBalances: { totalSupply: BigNumber; staked: BigNumber; reward: BigNumber; loading: boolean },
                      userBalance: { value: BigNumber; loading: boolean },
@@ -40,17 +40,18 @@ export default function ProgramScreen() {
   const { path } = useRouteMatch();
   const { token: symbol } = useParams() as { token: string };
   const { program } = useProgram(symbol);
-  const { contractBalances, contractLoading, refreshFarmingContract } = useFarmingContract(program.farmingContract);
-  const { balance, loading, refresh } = useTokenBalance(program.poolContract, program.id);
+  const { farmingContract, pool: { contract: poolContract } } = program;
+  const { contractBalances, contractLoading, refreshFarmingContract } = useFarmingContract(farmingContract);
+  const { balance, loading, refresh } = useTokenBalance(poolContract, 0);
 
 
   const history = useHistory();
   const classes = useStyles();
   const onTabChange = useCallback(
     (event: React.ChangeEvent<{}>, newPath: string) => {
-      history.push(newPath.replace(':token', program.symbol));
+      history.push(newPath.replace(':token', farmingContract));
     },
-    [history, program]
+    [farmingContract, history]
   );
 
   const onApply = () => {
@@ -60,7 +61,7 @@ export default function ProgramScreen() {
     refresh();
   };
 
-  return (<Container maxWidth='md'>
+  return (<Container maxWidth='sm'>
     <Tabs
       value={path}
       onChange={onTabChange}
