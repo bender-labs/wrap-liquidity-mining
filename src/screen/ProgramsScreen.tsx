@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => createStyles({
     color: 'white',
     borderBottom: '3px solid #ffd000',
     textAlign: 'center',
-    
     paddingBottom: '15px'
   },
   titleCenter: {
