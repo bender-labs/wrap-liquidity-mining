@@ -1,4 +1,5 @@
-import { Box, createStyles, makeStyles, styled } from '@material-ui/core';
+import { Box } from '@material-ui/core';
+import { createStyles, makeStyles, styled } from '@material-ui/core/styles';
 import * as React from 'react';
 
 export const PaperHeader = styled('header')((theme) => ({
@@ -14,7 +15,6 @@ export const PaperHeader = styled('header')((theme) => ({
   fontWeight: 'bold',
   boxShadow: 'inset 0 -7px 9px -7px rgba(0,0,0,0.4)'
 }));
-
 
 export const PaperTitle = styled('div')({
   justifySelf: 'center',
@@ -61,15 +61,23 @@ const useStyles = makeStyles((theme) =>
     alternate: {
       backgroundColor: '#C4C4C4'
     }
-
   })
 );
 
-export function PaperContent(props: React.HTMLAttributes<HTMLDivElement> & { borderBottom?: boolean, alternate?: boolean }) {
+export function PaperContent(
+  props: React.HTMLAttributes<HTMLDivElement> & {
+    borderBottom?: boolean;
+    alternate?: boolean;
+  }
+) {
   const classes = useStyles();
   const { borderBottom = false, alternate = false, ...rest } = props;
   const borderClass = borderBottom ? classes.borderBottom : '';
   const alternateClass = alternate ? classes.alternate : '';
-  return <Box  {...rest}
-               className={`${classes.card} ${props.className} ${borderClass} ${alternateClass}`} />;
+  return (
+    <Box
+      {...rest}
+      className={`${classes.card} ${props.className} ${borderClass} ${alternateClass}`}
+    />
+  );
 }

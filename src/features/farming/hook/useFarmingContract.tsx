@@ -4,7 +4,11 @@ import { useWalletContext } from '../../wallet/WalletContext';
 import FarmingContractApi from '../api/FarmingContractApi';
 import { ConnectionStatus } from '../../wallet/connectionStatus';
 
-const initialState = { totalSupply: new BigNumber(''), staked: new BigNumber(''), reward: new BigNumber('') };
+const initialState = {
+  totalSupply: new BigNumber(''),
+  staked: new BigNumber(''),
+  reward: new BigNumber(''),
+};
 
 export default function useFarmingContract(farmingContract: string) {
   const [loading, setLoading] = useState(false);
@@ -14,7 +18,10 @@ export default function useFarmingContract(farmingContract: string) {
 
   const refresh = useCallback(async () => {
     setLoading(true);
-    const r = await new FarmingContractApi(library!).extractBalances(farmingContract, account!);
+    const r = await new FarmingContractApi(library!).extractBalances(
+      farmingContract,
+      account!
+    );
     setLoading(false);
     setBalances(r);
   }, [library, farmingContract, account]);
@@ -28,5 +35,9 @@ export default function useFarmingContract(farmingContract: string) {
     refresh();
   }, [refresh, status, account]);
 
-  return { contractLoading: loading, refreshFarmingContract: refresh, contractBalances: balances };
+  return {
+    contractLoading: loading,
+    refreshFarmingContract: refresh,
+    contractBalances: balances,
+  };
 }

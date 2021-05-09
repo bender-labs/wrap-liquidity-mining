@@ -11,33 +11,33 @@ const useStyles = makeStyles(() => ({
     padding: '30px 0',
     '& input': {
       fontFamily: 'inherit',
-      textAlign: 'center'
-    }
+      textAlign: 'center',
+    },
   },
   large: {
     '& input': {
-      fontSize: 52
-    }
+      fontSize: 52,
+    },
   },
   medium: {
     '& input': {
-      fontSize: 42
-    }
+      fontSize: 42,
+    },
   },
   small: {
     '& input': {
-      fontSize: 32
-    }
+      fontSize: 32,
+    },
   },
   smallest: {
     '& input': {
-      fontSize: 22
-    }
+      fontSize: 22,
+    },
   },
   input: {
     fontSize: 52,
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 }));
 
 export type AmountInputProps = {
@@ -53,16 +53,16 @@ export type AmountInputProps = {
 };
 
 export default function AmountInput({
-                                      symbol,
-                                      value,
-                                      decimals,
-                                      onChange,
-                                      error,
-                                      helperText,
-                                      focus = false,
-                                      disabled = false,
-                                      icon: Icon
-                                    }: AmountInputProps) {
+  symbol,
+  value,
+  decimals,
+  onChange,
+  error,
+  helperText,
+  focus = false,
+  disabled = false,
+  icon: Icon,
+}: AmountInputProps) {
   const classes = useStyles();
   const handleOnChange = (e: NumberFormatValues) => {
     onChange(e.value);
@@ -70,9 +70,8 @@ export default function AmountInput({
 
   return (
     <div className={`${classes.container} ${classes.medium}`}>
-
       <NumberFormat
-        displayType='input'
+        displayType="input"
         className={classes.input}
         placeholder={`0 ${symbol}`}
         autoFocus={focus}
@@ -85,12 +84,13 @@ export default function AmountInput({
         helperText={helperText}
         disabled={disabled}
         variant={'filled'}
-        InputProps={
-          {
-            endAdornment: <InputAdornment position={'end'}
-                                          disablePointerEvents={true}><Icon /></InputAdornment>
-          }
-        }
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position={'end'} disablePointerEvents={true}>
+              <Icon />
+            </InputAdornment>
+          ),
+        }}
         onValueChange={handleOnChange}
         {...formatOptions}
       />

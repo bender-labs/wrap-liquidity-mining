@@ -15,7 +15,7 @@ const useStyle = makeStyles(() => ({
   label: {
     width: '35%',
     fontSize: 12,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
 
   valueWrapper: {

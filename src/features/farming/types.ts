@@ -8,13 +8,13 @@ export interface FarmingContractInfoProps {
     staked: BigNumber;
     reward: BigNumber;
     loading: boolean;
-  },
+  };
   balance: {
     value: BigNumber;
     loading: boolean;
-  }
+  };
 }
 
 export interface FarmingContractActionsProps extends FarmingContractInfoProps {
-  onApply: () => void
+  onApply: () => void;
 }

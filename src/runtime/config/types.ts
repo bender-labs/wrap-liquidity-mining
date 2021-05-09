@@ -12,11 +12,11 @@ export interface Token {
 
 export interface ProgramConfig {
   pool: {
-    contract: string,
-    base: Token,
-    quote: 'xtz'
-  },
-  reward: Token,
+    contract: string;
+    base: Token;
+    quote: 'xtz';
+  };
+  reward: Token;
   farmingContract: string;
 }
 
@@ -32,16 +32,20 @@ export interface Config {
     networkId: NetworkType;
     networkName: string;
   };
-  programs: ProgramConfig[]
+  programs: ProgramConfig[];
 }
 
-const env = Environment[(process.env.REACT_APP_WRAP_ENVIRONMENT || 'TESTNET') as keyof typeof Environment];
+const env =
+  Environment[
+    (process.env.REACT_APP_WRAP_ENVIRONMENT ||
+      'TESTNET') as keyof typeof Environment
+  ];
 export const initialConfig: Config = {
   environmentName: env,
   tezos: {
     rpcUrl: process.env.REACT_APP_TZ_RPC!,
     networkId: process.env.REACT_APP_TZ_NETWORK_ID! as NetworkType,
-    networkName: process.env.REACT_APP_TZ_NETWORK_NAME!
+    networkName: process.env.REACT_APP_TZ_NETWORK_NAME!,
   },
-  programs: programs[env]
+  programs: programs[env],
 };

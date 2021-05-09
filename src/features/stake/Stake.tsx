@@ -10,9 +10,16 @@ import { FarmingContractActionsProps } from '../farming/types';
 import FarmingContractInfo from '../farming/components/FarmingContractInfo';
 import FarmingContractHeader from '../farming/components/FarmingContractHeader';
 
-
-export default function Stake({ program, contractBalances, onApply, balance }: FarmingContractActionsProps) {
-  const { amount, changeAmount, stakingStatus, stake } = useStake(program, balance.value);
+export default function Stake({
+  program,
+  contractBalances,
+  onApply,
+  balance,
+}: FarmingContractActionsProps) {
+  const { amount, changeAmount, stakingStatus, stake } = useStake(
+    program,
+    balance.value
+  );
 
   const handleStake = useCallback(async () => {
     await stake();
@@ -30,22 +37,39 @@ export default function Stake({ program, contractBalances, onApply, balance }: F
           onChange={changeAmount}
           amountToWrap={amount}
           balanceLoading={balance.loading}
-          disabled={stakingStatus === StakingStatus.NOT_CONNECTED || balance.value.isZero() || balance.value.isNaN()}
+          disabled={
+            stakingStatus === StakingStatus.NOT_CONNECTED ||
+            balance.value.isZero() ||
+            balance.value.isNaN()
+          }
           icon={QuipuIcon}
         />
       </PaperContent>
-      <FarmingContractInfo program={program} contractBalances={contractBalances} balance={balance} />
-      <AssetSummary decimals={6} symbol={'LP Token'} label={'Your new share will be'}
-                    value={amount.plus(contractBalances.staked)} />
+      <FarmingContractInfo
+        program={program}
+        contractBalances={contractBalances}
+        balance={balance}
+      />
+      <AssetSummary
+        decimals={6}
+        symbol={'LP Token'}
+        label={'Your new share will be'}
+        value={amount.plus(contractBalances.staked)}
+      />
       <PaperFooter>
-        {stakingStatus !== StakingStatus.NOT_CONNECTED &&
-        <LoadableButton
-          loading={stakingStatus === StakingStatus.STAKING}
-          onClick={handleStake}
-          disabled={stakingStatus !== StakingStatus.READY}
-          text={'Stake'}
-          variant={'contained'} />}
-        {stakingStatus === StakingStatus.NOT_CONNECTED && <WalletConnection withConnectionStatus={false} />}
+        {stakingStatus !== StakingStatus.NOT_CONNECTED && (
+          <LoadableButton
+            loading={stakingStatus === StakingStatus.STAKING}
+            onClick={handleStake}
+            disabled={stakingStatus !== StakingStatus.READY}
+            text={'Stake'}
+            variant={'contained'}
+          />
+        )}
+        {stakingStatus === StakingStatus.NOT_CONNECTED && (
+          <WalletConnection withConnectionStatus={false} />
+        )}
       </PaperFooter>
-    </>);
+    </>
+  );
 }

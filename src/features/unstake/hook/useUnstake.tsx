@@ -23,7 +23,8 @@ const nextStatus = (balance: BigNumber, amount: BigNumber) => {
 export default function useUnstake(token: ProgramConfig, balance: BigNumber) {
   const { status, library, account } = useWalletContext();
   const [unstakeStatus, setStatus] = useState(UnstakeStatus.NOT_CONNECTED);
-  const connected = status === ConnectionStatus.CONNECTED && account !== undefined;
+  const connected =
+    status === ConnectionStatus.CONNECTED && account !== undefined;
   const [amount, setAmount] = useState(new BigNumber(''));
   const { enqueueSnackbar } = useSnackbar();
 
@@ -45,10 +46,13 @@ export default function useUnstake(token: ProgramConfig, balance: BigNumber) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balance]);
 
-  const changeAmount = useCallback((amt: BigNumber) => {
-    setAmount(amt);
-    setStatus(nextStatus(balance, amt));
-  }, [balance]);
+  const changeAmount = useCallback(
+    (amt: BigNumber) => {
+      setAmount(amt);
+      setStatus(nextStatus(balance, amt));
+    },
+    [balance]
+  );
 
   const unstake = useCallback(async () => {
     const api = new FarmingContractApi(library!);
@@ -58,15 +62,16 @@ export default function useUnstake(token: ProgramConfig, balance: BigNumber) {
       setAmount(new BigNumber(''));
       setStatus(UnstakeStatus.NOT_READY);
       enqueueSnackbar('Unstaking done', { variant: 'success' });
-
     } catch (error) {
       enqueueSnackbar(error.description, { variant: 'error' });
       setStatus(UnstakeStatus.READY);
     }
-
   }, [library, amount, token.farmingContract, enqueueSnackbar]);
 
   return {
-    unstakeStatus, amount, changeAmount, unstake
+    unstakeStatus,
+    amount,
+    changeAmount,
+    unstake,
   };
 }

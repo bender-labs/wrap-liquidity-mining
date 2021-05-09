@@ -1,4 +1,9 @@
-import { Container, createStyles, makeStyles, Tab, Tabs } from '@material-ui/core';
+import {
+  Container,
+  Tab,
+  Tabs,
+} from '@material-ui/core';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { useHistory, useParams, useRouteMatch } from 'react-router';
 import React, { useCallback } from 'react';
 import { paths } from '../routes';
@@ -17,33 +22,51 @@ const useStyles = makeStyles(() =>
   createStyles({
     bg: {
       color: 'white',
-      marginBottom: '10px'
+      marginBottom: '10px',
     },
     tab: {
       textTransform: 'none',
-      fontWeight: 900
-    }
+      fontWeight: 900,
+    },
   })
 );
 
-function WithProgram(program: ProgramConfig,
-                     onApply: () => void,
-                     contractBalances: { totalSupply: BigNumber; staked: BigNumber; reward: BigNumber; loading: boolean },
-                     userBalance: { value: BigNumber; loading: boolean },
-                     Comp: React.FunctionComponent<FarmingContractActionsProps>) {
+function WithProgram(
+  program: ProgramConfig,
+  onApply: () => void,
+  contractBalances: {
+    totalSupply: BigNumber;
+    staked: BigNumber;
+    reward: BigNumber;
+    loading: boolean;
+  },
+  userBalance: { value: BigNumber; loading: boolean },
+  Comp: React.FunctionComponent<FarmingContractActionsProps>
+) {
   return () => (
-    <Comp onApply={onApply} program={program} balance={userBalance} contractBalances={contractBalances} />);
-
+    <Comp
+      onApply={onApply}
+      program={program}
+      balance={userBalance}
+      contractBalances={contractBalances}
+    />
+  );
 }
 
 export default function ProgramScreen() {
   const { path } = useRouteMatch();
   const { token: symbol } = useParams() as { token: string };
   const { program } = useProgram(symbol);
-  const { farmingContract, pool: { contract: poolContract } } = program;
-  const { contractBalances, contractLoading, refreshFarmingContract } = useFarmingContract(farmingContract);
+  const {
+    farmingContract,
+    pool: { contract: poolContract },
+  } = program;
+  const {
+    contractBalances,
+    contractLoading,
+    refreshFarmingContract,
+  } = useFarmingContract(farmingContract);
   const { balance, loading, refresh } = useTokenBalance(poolContract, 0);
-
 
   const history = useHistory();
   const classes = useStyles();
@@ -61,48 +84,64 @@ export default function ProgramScreen() {
     refresh();
   };
 
-  return (<Container maxWidth='sm'>
+  return (
+    <Container maxWidth="sm">
+      <Tabs
+        value={path}
+        onChange={onTabChange}
+        className={classes.bg}
+        indicatorColor="primary"
+        variant="fullWidth"
+      >
+        <Tab label="Stake" value={paths.STAKE} className={classes.tab} />
+        <Tab label="Unstake" value={paths.UNSTAKE} className={classes.tab} />
+        <Tab label="Claim" value={paths.CLAIM} className={classes.tab} />
+      </Tabs>
+      <Switch>
+        <Route
+          path={paths.STAKE}
+          exact
+          component={WithProgram(
+            program,
+            onApply,
+            {
+              ...contractBalances,
+              loading: contractLoading,
+            },
+            { value: balance, loading },
+            Stake
+          )}
+        />
+        <Route
+          path={paths.UNSTAKE}
+          exact
+          component={WithProgram(
+            program,
+            onApply,
+            {
+              ...contractBalances,
+              loading: contractLoading,
+            },
+            { value: balance, loading },
+            Unstake
+          )}
+        />
 
-    <Tabs
-      value={path}
-      onChange={onTabChange}
-      className={classes.bg}
-      indicatorColor='primary'
-      variant='fullWidth'
-    >
-      <Tab
-        label='Stake'
-        value={paths.STAKE}
-        className={classes.tab}
-      />
-      <Tab
-        label='Unstake'
-        value={paths.UNSTAKE}
-        className={classes.tab}
-      />
-      <Tab
-        label='Claim'
-        value={paths.CLAIM}
-        className={classes.tab}
-      />
-    </Tabs>
-    <Switch>
-      <Route path={paths.STAKE} exact
-             component={WithProgram(program, onApply, {
-               ...contractBalances,
-               loading: contractLoading
-             }, { value: balance, loading }, Stake)} />
-      <Route path={paths.UNSTAKE} exact
-             component={WithProgram(program, onApply, {
-               ...contractBalances,
-               loading: contractLoading
-             }, { value: balance, loading }, Unstake)} />
-
-      <Route path={paths.CLAIM} exact
-             component={WithProgram(program, onApply, {
-               ...contractBalances,
-               loading: contractLoading
-             }, { value: balance, loading }, Claim)} />
-    </Switch>
-  </Container>);
+        <Route
+          path={paths.CLAIM}
+          exact
+          component={WithProgram(
+            program,
+            onApply,
+            {
+              ...contractBalances,
+              loading: contractLoading,
+            },
+            { value: balance, loading },
+            Claim
+          )}
+        />
+      </Switch>
+    </Container>
+  );
 }

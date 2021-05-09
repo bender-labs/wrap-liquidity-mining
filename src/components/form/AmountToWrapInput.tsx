@@ -22,18 +22,18 @@ type Props = {
 };
 
 export default function AmountToWrapInput({
-                                            balance,
-                                            amountToWrap,
-                                            decimals,
-                                            symbol,
-                                            onChange,
-                                            balanceLoading,
-                                            icon,
-                                            disabled
-                                          }: Props) {
+  balance,
+  amountToWrap,
+  decimals,
+  symbol,
+  onChange,
+  balanceLoading,
+  icon,
+  disabled,
+}: Props) {
   const [[error, helperText], setUserError] = useState<[boolean, string]>([
     false,
-    ''
+    '',
   ]);
 
   const displayBalance = !balance.isNaN() || balanceLoading;
@@ -52,7 +52,7 @@ export default function AmountToWrapInput({
     if (amountToWrap.gt(balance)) {
       setUserError([
         true,
-        `Insufficient Balance of ${formatAmount(symbol, balance, decimals)}`
+        `Insufficient Balance of ${formatAmount(symbol, balance, decimals)}`,
       ]);
       return;
     }
@@ -60,7 +60,7 @@ export default function AmountToWrapInput({
       false,
       `Balance: ${
         balance.isNaN() ? '' : formatAmount(symbol, balance, decimals)
-      }`
+      }`,
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [decimals, symbol, displayBalance, balance, error]);
@@ -73,7 +73,7 @@ export default function AmountToWrapInput({
     if (displayBalance && newAmount.gt(balance)) {
       setUserError([
         true,
-        `Insufficient Balance of ${formatAmount(symbol, balance, decimals)}`
+        `Insufficient Balance of ${formatAmount(symbol, balance, decimals)}`,
       ]);
     }
     onChange(newAmount);

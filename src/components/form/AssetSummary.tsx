@@ -16,8 +16,7 @@ const useStyle = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '0 26px'
-
+    padding: '0 26px',
   },
 
   label: {
@@ -56,7 +55,7 @@ export default function AssetSummary({
     <div className={classes.root}>
       <div className={classes.wrapper}>
         <Typography component="span" className={classes.label}>
-          {label} 
+          {label}
         </Typography>
         <NumberFormat
           className={classes.valueWrapper}

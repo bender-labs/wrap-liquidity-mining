@@ -18,14 +18,10 @@ export function useConfig() {
   return config;
 }
 
-
 export default function Provider({ children }: PropsWithChildren<{}>) {
-
   const [config] = useState<ContextValue>(initialConfig);
 
   return (
-    <ConfigContext.Provider value={config}>
-      {children}
-    </ConfigContext.Provider>
+    <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>
   );
 }

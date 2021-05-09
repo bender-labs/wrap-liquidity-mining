@@ -1,4 +1,5 @@
-import { AppBar, Box, createStyles, makeStyles, Toolbar } from '@material-ui/core';
+import { AppBar, Box, Toolbar } from '@material-ui/core';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import React from 'react';
 import logo from './logo.png';
@@ -82,7 +83,6 @@ const Render = () => {
               <Link to='/'>
                 <img src={logo} className={classes.logo} alt='Logo' />
               </Link>
-
             </Grid>
           </Grid>
 
@@ -93,15 +93,11 @@ const Render = () => {
             justify='flex-end'
             alignItems='center'
           >
-
             <Grid item>
               <Box className={classes.wallets}>
-                <WalletConnection
-                  withConnectionStatus={true}
-                />
+                <WalletConnection withConnectionStatus={true} />
               </Box>
             </Grid>
-
           </Grid>
         </Toolbar>
       </AppBar>

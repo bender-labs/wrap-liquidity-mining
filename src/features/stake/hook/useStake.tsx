@@ -23,10 +23,10 @@ const nextStatus = (balance: BigNumber, amount: BigNumber) => {
 export default function useStake(program: ProgramConfig, balance: BigNumber) {
   const { status, library, account } = useWalletContext();
   const [stakingStatus, setStatus] = useState(StakingStatus.NOT_CONNECTED);
-  const connected = status === ConnectionStatus.CONNECTED && account !== undefined;
+  const connected =
+    status === ConnectionStatus.CONNECTED && account !== undefined;
   const [amount, setAmount] = useState(new BigNumber(''));
   const { enqueueSnackbar } = useSnackbar();
-
 
   useEffect(() => {
     if (!connected) {
@@ -46,26 +46,39 @@ export default function useStake(program: ProgramConfig, balance: BigNumber) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balance]);
 
-  const changeAmount = useCallback((amt: BigNumber) => {
-    setAmount(amt);
-    setStatus(nextStatus(balance, amt));
-  }, [balance]);
+  const changeAmount = useCallback(
+    (amt: BigNumber) => {
+      setAmount(amt);
+      setStatus(nextStatus(balance, amt));
+    },
+    [balance]
+  );
 
   const stake = useCallback(async () => {
     const api = new FarmingContractApi(library!);
     setStatus(StakingStatus.STAKING);
     try {
-      await api.stake(account!, amount, program.pool.contract, program.farmingContract);
+      await api.stake(
+        account!,
+        amount,
+        program.pool.contract,
+        program.farmingContract
+      );
       setAmount(new BigNumber(''));
       setStatus(StakingStatus.NOT_READY);
       enqueueSnackbar('Staking done', { variant: 'success' });
-
     } catch (error) {
       enqueueSnackbar(error.description, { variant: 'error' });
       setStatus(StakingStatus.READY);
     }
-
-  }, [library, account, amount, program.pool.contract, program.farmingContract, enqueueSnackbar]);
+  }, [
+    library,
+    account,
+    amount,
+    program.pool.contract,
+    program.farmingContract,
+    enqueueSnackbar,
+  ]);
 
   return { stakingStatus, amount, changeAmount, stake };
 }

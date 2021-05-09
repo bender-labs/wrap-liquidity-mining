@@ -6,20 +6,20 @@ const WRAP: Token = {
   decimals: 8,
   symbol: 'WRAP',
   name: 'WRAP',
-  id: 0
+  id: 0,
 };
 
 const programs: { [key in Environment]: ProgramConfig[] } = {
-  'MAINNET': [],
-  'TESTNET': [
+  MAINNET: [],
+  TESTNET: [
     {
       reward: WRAP,
       farmingContract: 'KT1Tgn7wYwmjhTuSot5DPZ8U1hPn7cPzhnea',
       pool: {
         contract: 'KT1Srr8aWcxPTptoCNrWoXGQdrrNWN6Zx58X',
         base: WRAP,
-        quote: 'xtz'
-      }
+        quote: 'xtz',
+      },
     },
     {
       reward: WRAP,
@@ -31,13 +31,14 @@ const programs: { [key in Environment]: ProgramConfig[] } = {
           name: 'Dai Stable coin',
           id: 0,
           contract: 'KT1DJwRryZ11dGDnqmmRtTiSsgxQDY4bw3j4',
-          thumbnailUri: 'ipfs:////QmVov6RtfRNzuQGvGKmhnABUsfCiDKvn31amg8DUxzowtM',
-          decimals: 18
+          thumbnailUri:
+            'ipfs:////QmVov6RtfRNzuQGvGKmhnABUsfCiDKvn31amg8DUxzowtM',
+          decimals: 18,
         },
-        quote: 'xtz'
-      }
-    }
-  ]
+        quote: 'xtz',
+      },
+    },
+  ],
 };
 
 export default programs;
