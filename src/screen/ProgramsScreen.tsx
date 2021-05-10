@@ -9,9 +9,10 @@ import { opPage } from '../routes';
 const useStyles = makeStyles((theme) => createStyles({
   subtitle: {
     color: '#000000',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginBottom: '20px'
   },
-  test: {
+  containBox: {
     borderRadius: '0 0 10px 10px',
     padding: '30px',
     backgroundColor: '#e5e5e5'
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme) => createStyles({
     color: 'white',
     borderBottom: '3px solid #ffd000',
     textAlign: 'center',
+    fontSize: '30px',
     paddingBottom: '15px'
   },
   titleCenter: {
@@ -33,14 +35,14 @@ export default function ProgramsScreen() {
   const history = useHistory();
   const { programs } = useConfig();
   return (
-    <Container  maxWidth={'md'}>
+    <Container  maxWidth={'sm'}>
 
       <Box className={classes.titleCenter} my={2} >
-        <Typography component={'h1'} variant={'h2'} className={classes.title}>Liquidity Mining Programs</Typography>
+        <Typography className={classes.title}>Liquidity Mining Programs</Typography>
 
   
       </Box>
-      <Box className={classes.test}>
+      <Box className={classes.containBox}>
         <Typography variant={'subtitle1'} className={classes.subtitle}>Select an option to stake, unstake or claim your
           rewards.</Typography>
       <ProgramList
@@ -50,6 +52,7 @@ export default function ProgramsScreen() {
           history.push(opPage(t));
         }}
       />
+      </Box>
     </Container>
   );
 

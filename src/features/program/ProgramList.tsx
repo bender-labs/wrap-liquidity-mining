@@ -26,6 +26,9 @@ const useStyle = makeStyles(() => createStyles({
     },
 
   },
+  option: {
+    fontSize: '20px'
+  },
   item: {
     '&:hover': {
       cursor: 'pointer'
@@ -68,7 +71,7 @@ function Program({
           <TezosIcon />
         </Grid>
         <Grid item>
-          <Typography variant={'h4'}>
+          <Typography className={classes.option}>
             Quipuswap {symbol}/{quote.toUpperCase()}
           </Typography>
         </Grid>
