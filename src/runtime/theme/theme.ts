@@ -8,6 +8,7 @@ export const themeOptions: ThemeOptions = {
     secondary: {
       main: '#000000',
     },
+
   },
   overrides: {
     MuiDialog: {

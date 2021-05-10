@@ -26,7 +26,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     backgroundColor: '#FFFFFF',
     position: 'relative',
-    borderRadius: '25px'
+    borderRadius: '25px',
+    width: '50%',
+    left: '23%'
   },
   button: {
     textTransform: 'none',

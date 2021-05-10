@@ -28,6 +28,7 @@ export default function Stake({
 
   return (
     <>
+
       <FarmingContractHeader program={program} />
       <PaperContent>
         <AmountToWrapInput
