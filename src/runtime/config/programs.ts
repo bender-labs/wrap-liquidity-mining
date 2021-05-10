@@ -23,7 +23,7 @@ const programs: { [key in Environment]: ProgramConfig[] } = {
     },
     {
       reward: WRAP,
-      farmingContract: '',
+      farmingContract: 'KT1SHNTj8icDmdXhaTuqe2AF5pE4mzMt6BXk',
       pool: {
         contract: 'KT1FkFC5ovz9UrGoQJLd5hyjmz6aSnASTDsx',
         base: {
