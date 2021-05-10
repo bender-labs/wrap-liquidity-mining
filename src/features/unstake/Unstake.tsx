@@ -9,6 +9,18 @@ import React, { useCallback } from 'react';
 import { FarmingContractActionsProps } from '../farming/types';
 import FarmingContractInfo from '../farming/components/FarmingContractInfo';
 import FarmingContractHeader from '../farming/components/FarmingContractHeader';
+import { Typography } from '@material-ui/core';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    warning: {
+
+      fontSize: '10px',
+
+    }
+  })
+)
 
 export function Unstake({
   program,
@@ -25,6 +37,8 @@ export function Unstake({
     await unstake();
     onApply();
   }, [onApply, unstake]);
+
+  const classes = useStyles()
 
   return (
     <>
@@ -57,6 +71,9 @@ export function Unstake({
         value={contractBalances.staked.minus(amount)}
       />
       <PaperFooter>
+        {unstakeStatus === UnstakeStatus.READY && (
+          <Typography className={classes.warning}> If you have pending rewards, it will be automatically claimed while unstaking</Typography>
+        )}
         {unstakeStatus !== UnstakeStatus.NOT_CONNECTED && (
           <LoadableButton
             loading={unstakeStatus === UnstakeStatus.UNSTAKING}

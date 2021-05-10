@@ -9,6 +9,19 @@ import React, { useCallback } from 'react';
 import { FarmingContractActionsProps } from '../farming/types';
 import FarmingContractInfo from '../farming/components/FarmingContractInfo';
 import FarmingContractHeader from '../farming/components/FarmingContractHeader';
+import { Typography } from '@material-ui/core';
+import { makeStyles, createStyles } from '@material-ui/core/styles'
+
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    warning: {
+
+      fontSize: '10px',
+
+    }
+  })
+)
 
 export default function Stake({
   program,
@@ -25,6 +38,8 @@ export default function Stake({
     await stake();
     onApply();
   }, [onApply, stake]);
+
+  const classes = useStyles()
 
   return (
     <>
@@ -58,7 +73,11 @@ export default function Stake({
         value={amount.plus(contractBalances.staked)}
       />
       <PaperFooter>
+        {stakingStatus === StakingStatus.READY && (
+          <Typography className={classes.warning}> If you have pending rewards, it will be automatically claimed while staking</Typography>
+        )}
         {stakingStatus !== StakingStatus.NOT_CONNECTED && (
+
           <LoadableButton
             loading={stakingStatus === StakingStatus.STAKING}
             onClick={handleStake}
