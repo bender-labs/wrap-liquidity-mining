@@ -1,55 +1,75 @@
 import { PaperContent, PaperFooter } from '../../components/paper/Paper';
 import AmountToWrapInput from '../../components/form/AmountToWrapInput';
 import QuipuIcon from '../../components/icons/QuipuIcon';
-import LabelAndValue from '../../components/form/LabelAndValue';
-import LabelAndAsset from '../../components/form/LabelAndAsset';
-import BigNumber from 'bignumber.js';
 import AssetSummary from '../../components/form/AssetSummary';
 import LoadableButton from '../../components/button/LoadableButton';
 import WalletConnection from '../wallet/WalletConnection';
-import { TokenConfig } from '../../runtime/config/types';
 import useUnstake, { UnstakeStatus } from './hook/useUnstake';
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
+import { FarmingContractActionsProps } from '../farming/types';
+import FarmingContractInfo from '../farming/components/FarmingContractInfo';
+import FarmingContractHeader from '../farming/components/FarmingContractHeader';
 
-export type WithdrawProps = {
-  token: TokenConfig
-}
+export function Unstake({
+  program,
+  onApply,
+  contractBalances,
+  balance,
+}: FarmingContractActionsProps) {
+  const { unstakeStatus, amount, changeAmount, unstake } = useUnstake(
+    program,
+    contractBalances.staked
+  );
 
-export function Unstake({ token }: WithdrawProps) {
-  const { unstakeStatus } = useUnstake(token, new BigNumber(0));
+  const handleWithdrawal = useCallback(async () => {
+    await unstake();
+    onApply();
+  }, [onApply, unstake]);
 
-  const handleWithdrawal = useCallback(() => {
-
-  }, []);
-
-  return (<>
-    <PaperContent>
-      <AmountToWrapInput
-        balance={new BigNumber('')}
+  return (
+    <>
+      <FarmingContractHeader program={program} />
+      <PaperContent>
+        <AmountToWrapInput
+          balance={contractBalances.staked}
+          decimals={6}
+          symbol={'LP Token'}
+          onChange={changeAmount}
+          amountToWrap={amount}
+          balanceLoading={contractBalances.loading}
+          disabled={
+            unstakeStatus === UnstakeStatus.NOT_CONNECTED ||
+            contractBalances.staked.isZero() ||
+            contractBalances.staked.isNaN()
+          }
+          icon={QuipuIcon}
+        />
+      </PaperContent>
+      <FarmingContractInfo
+        program={program}
+        contractBalances={contractBalances}
+        balance={balance}
+      />
+      <AssetSummary
         decimals={6}
         symbol={'LP Token'}
-        onChange={() => {
-        }}
-        amountToWrap={new BigNumber('')}
-        balanceLoading={false}
-        disabled={false}
-        icon={QuipuIcon}
+        label={'Your new share will be'}
+        value={contractBalances.staked.minus(amount)}
       />
-    </PaperContent>
-    <PaperContent alternate>
-      <LabelAndValue label={'Farming contract'} value={token.farmingContract} />
-      <LabelAndAsset label={'Total staked'} value={new BigNumber(10)} decimals={6} symbol={'LP Token'} />
-    </PaperContent>
-    <AssetSummary decimals={6} symbol={'LP Token'} label={'Your new share will be'} value={new BigNumber(0)} />
-    <PaperFooter>
-      {unstakeStatus !== UnstakeStatus.NOT_CONNECTED &&
-      <LoadableButton
-        loading={unstakeStatus === UnstakeStatus.STAKING}
-        onClick={handleWithdrawal}
-        disabled={unstakeStatus !== UnstakeStatus.READY}
-        text={'Withdraw'}
-        variant={'contained'} />}
-      {unstakeStatus === UnstakeStatus.NOT_CONNECTED && <WalletConnection withConnectionStatus={false} />}
-    </PaperFooter>
-  </>);
+      <PaperFooter>
+        {unstakeStatus !== UnstakeStatus.NOT_CONNECTED && (
+          <LoadableButton
+            loading={unstakeStatus === UnstakeStatus.UNSTAKING}
+            onClick={handleWithdrawal}
+            disabled={unstakeStatus !== UnstakeStatus.READY}
+            text={'Unstake'}
+            variant={'contained'}
+          />
+        )}
+        {unstakeStatus === UnstakeStatus.NOT_CONNECTED && (
+          <WalletConnection withConnectionStatus={false} />
+        )}
+      </PaperFooter>
+    </>
+  );
 }

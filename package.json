@@ -29,12 +29,14 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-app-rewired start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build:staging": "dotenv -e .env.development react-scripts build",
-    "build:production": "dotenv -e .env.production react-scripts build"
+    "build:production": "dotenv -e .env.production react-scripts build",
+    "prettier": "prettier --write ./src",
+    "rewrite-imports": "find src -name '*.ts' -print | xargs npx jscodeshift --extensions=ts --parser=ts -t node_modules/@material-ui/codemod/lib/v4.0.0/top-level-imports.js"
   },
   "eslintConfig": {
     "extends": [
@@ -55,7 +57,12 @@
     ]
   },
   "devDependencies": {
+    "@material-ui/codemod": "^4.5.0",
+    "babel-plugin-import": "^1.13.3",
+    "customize-cra": "^1.0.0",
     "dotenv-cli": "^4.0.0",
-    "prettier": "^2.2.1"
+    "jscodeshift": "^0.12.0",
+    "prettier": "^2.2.1",
+    "react-app-rewired": "^2.1.8"
   }
 }

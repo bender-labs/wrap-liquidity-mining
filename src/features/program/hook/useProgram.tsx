@@ -2,18 +2,18 @@ import { useConfig } from '../../../runtime/config/ConfigContext';
 import { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router';
 
-export function useProgram(symbol: string) {
-  const { tokens } = useConfig();
+export function useProgram(address: string) {
+  const { programs } = useConfig();
   const history = useHistory();
-  const token = useMemo(() => {
-    return tokens.find((t) => t.symbol === symbol);
-  }, [symbol, tokens]);
+  const program = useMemo(() => {
+    return programs.find((t) => t.farmingContract === address);
+  }, [address, programs]);
 
   useEffect(() => {
-    if (!token) {
+    if (!program) {
       history.push('/');
     }
-  }, [history, token]);
+  }, [history, program]);
 
-  return { token: token! };
+  return { program: program! };
 }

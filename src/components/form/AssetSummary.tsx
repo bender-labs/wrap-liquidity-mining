@@ -16,8 +16,7 @@ const useStyle = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '0 26px'
-
+    padding: '0 26px',
   },
 
   label: {
@@ -56,14 +55,14 @@ export default function AssetSummary({
     <div className={classes.root}>
       <div className={classes.wrapper}>
         <Typography component="span" className={classes.label}>
-          {label} 
+          {label}
         </Typography>
         <NumberFormat
           className={classes.valueWrapper}
           displayType="text"
           suffix={` ${symbol}`}
           {...formatOptions}
-          value={value.shiftedBy(-decimals).toString()}
+          value={value.shiftedBy(-decimals).toString(10)}
         />
       </div>
     </div>

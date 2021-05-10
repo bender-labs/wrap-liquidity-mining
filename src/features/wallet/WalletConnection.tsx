@@ -1,22 +1,15 @@
 import React from 'react';
 import WalletConnectionCard from '../wallet/WalletConnectionCard';
 import { useSnackbar } from 'notistack';
-import {useWalletContext} from "./WalletContext";
+import { useWalletContext } from './WalletContext';
 
 type Props = {
   withConnectionStatus: boolean;
 };
 
-export default function WalletConnection({
-  withConnectionStatus,
-}: Props) {
+export default function WalletConnection({ withConnectionStatus }: Props) {
   const { enqueueSnackbar } = useSnackbar();
-  const {
-    activate,
-    deactivate,
-    status,
-    account,
-  } = useWalletContext();
+  const { activate, deactivate, status, account } = useWalletContext();
 
   const handleConnection = () => {
     activate().catch((error) => {

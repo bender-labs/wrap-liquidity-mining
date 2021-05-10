@@ -6,19 +6,19 @@ import {
   ConnectionActions,
   ConnectionStatus,
   connectionStatusInitialState,
-  connectionStatusReducer
+  connectionStatusReducer,
 } from './connectionStatus';
 import { RequestPermissionInput } from '@airgap/beacon-sdk';
 
 type ContextValue =
   | undefined
   | {
-  library?: TezosToolkit;
-  activate: () => Promise<void>;
-  deactivate: () => Promise<void>;
-  status: ConnectionStatus;
-  account?: string;
-};
+      library?: TezosToolkit;
+      activate: () => Promise<void>;
+      deactivate: () => Promise<void>;
+      status: ConnectionStatus;
+      account?: string;
+    };
 
 const WalletContext = React.createContext<ContextValue>(undefined);
 
@@ -37,7 +37,7 @@ export default function Provider({ children }: PropsWithChildren<{}>) {
     account: tzAccount,
     deactivate: tzDeactivate,
     reactivate: tzReactivate,
-    wallet: tzWallet
+    wallet: tzWallet,
   } = useTezosContext();
   const { rpcUrl, networkId } = useTezosConfig();
 
@@ -47,28 +47,27 @@ export default function Provider({ children }: PropsWithChildren<{}>) {
     return activation({
       network: {
         type: networkId,
-        rpcUrl
-      }
+        rpcUrl,
+      },
     })
       .then((_) => {
         tzDispatchConnectionAction({
-          type: ConnectionActions.connectionSuccessful
+          type: ConnectionActions.connectionSuccessful,
         });
       })
       .catch((error) => {
         console.log(error);
         tzDispatchConnectionAction({
-          type: ConnectionActions.connectionFailed
+          type: ConnectionActions.connectionFailed,
         });
         throw error;
       });
   };
 
-
   const deactivateTzConnection = () => {
     return tzDeactivate().then(() => {
       tzDispatchConnectionAction({
-        type: ConnectionActions.stoppingConnection
+        type: ConnectionActions.stoppingConnection,
       });
     });
   };
@@ -77,7 +76,7 @@ export default function Provider({ children }: PropsWithChildren<{}>) {
     account: undefined,
     activate: () => activateTzConnection(tzActivate),
     deactivate: deactivateTzConnection,
-    status: ConnectionStatus.NOT_CONNECTED
+    status: ConnectionStatus.NOT_CONNECTED,
   });
   const [tzConnectionStatus, tzDispatchConnectionAction] = React.useReducer(
     connectionStatusReducer,
@@ -92,15 +91,9 @@ export default function Provider({ children }: PropsWithChildren<{}>) {
       activate: prevState!.activate,
       deactivate: prevState!.deactivate,
       status: tzConnectionStatus,
-      account: tzAccount
+      account: tzAccount,
     }));
-  }, [
-    tzLibrary,
-    tzActivate,
-    tzConnectionStatus,
-    tzAccount
-  ]);
-
+  }, [tzLibrary, tzActivate, tzConnectionStatus, tzAccount]);
 
   useEffect(() => {
     tzWallet.client.getActiveAccount().then((activeAccount) => {

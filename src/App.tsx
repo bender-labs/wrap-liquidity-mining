@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core';
+import { CssBaseline } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import TezosProvider from './features/wallet/TezosContext';
 import { getLibrary } from './features/wallet/beacon';
 import { themeOptions } from './runtime/theme/theme';
