@@ -2,6 +2,14 @@ import React, { useEffect, useState } from 'react';
 import BigNumber from 'bignumber.js';
 import AmountInput from '../form/AmountInput';
 import Link from '@material-ui/core/Link'
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(() => createStyles({
+  maxLink: {
+    cursor: 'pointer'
+  }
+}));
+
 
 export function formatAmount(
   symbol: string,
@@ -36,8 +44,9 @@ export default function AmountToWrapInput({
     false,
     '',
   ]);
-
+  const classes = useStyles();
   const displayBalance = !balance.isNaN() || balanceLoading;
+  const displayMax = !balance.isNaN() && !balanceLoading;
 
   useEffect(() => {
     if (!displayBalance) {
@@ -95,7 +104,7 @@ export default function AmountToWrapInput({
         error={error}
         focus
         icon={icon}
-        helperText={<>{helperText}<Link color={'textPrimary'} onClick={setMax}>(Max)</Link></>}
+        helperText={<>{helperText}{displayMax && <>{' '}<Link className={classes.maxLink} color={'textPrimary'} onClick={setMax}>(Max)</Link></>}</>}
       />
     </>
   );
