@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import BigNumber from 'bignumber.js';
 import AmountInput from '../form/AmountInput';
+import Link from '@material-ui/core/Link'
 
 export function formatAmount(
   symbol: string,
@@ -79,6 +80,10 @@ export default function AmountToWrapInput({
     onChange(newAmount);
   };
 
+  const setMax = () => {
+    onChange(balance);
+  };
+
   return (
     <>
       <AmountInput
@@ -90,7 +95,7 @@ export default function AmountToWrapInput({
         error={error}
         focus
         icon={icon}
-        helperText={helperText}
+        helperText={<>{helperText}<Link color={'textPrimary'} onClick={setMax}>(Max)</Link></>}
       />
     </>
   );

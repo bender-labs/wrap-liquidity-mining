@@ -15,8 +15,7 @@ const useStyles = makeStyles((theme) => createStyles({
   containBox: {
     borderRadius: '0 0 10px 10px',
     padding: '30px',
-    backgroundColor: '#e5e5e5',
-    marginBottom: '50px'
+    backgroundColor: '#e5e5e5'
   },
   title: {
     color: 'white',
