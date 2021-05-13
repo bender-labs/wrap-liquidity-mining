@@ -1,9 +1,11 @@
-import { AppBar, Box, Toolbar } from '@material-ui/core';
+import { AppBar, Box, Toolbar, Link, Typography } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import React from 'react';
 import logo from './logo.png';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import LaunchIcon from '@material-ui/icons/Launch';
+
 import WalletConnection from './features/wallet/WalletConnection';
 
 const useStyles = makeStyles((theme) =>
@@ -20,11 +22,21 @@ const useStyles = makeStyles((theme) =>
         borderRadius: '20px',
         border: '1px solid transparent',
         padding: '6px 10px',
+        '& > svg': {
+          display: 'none',
+        },
         '&:hover': {
           textDecoration: 'none',
-          border: '1px solid #FFD000'
+          border: '1px solid #FFD000',
+
+          '& > svg': {
+            display: 'inline'
+          }
         }
       }
+    },
+    externalIcon: {
+      fontSize: '0.8rem',
     },
     first: {
       flex: 1
@@ -80,10 +92,49 @@ const Render = () => {
             alignItems='center'
           >
             <Grid item>
-              <Link to='/'>
+              <Link component={RouterLink} to={'/'}>
                 <img src={logo} className={classes.logo} alt='Logo' />
               </Link>
+
             </Grid>
+            <Grid item>
+              <Typography
+                variant="h6"
+                component="h1"
+                className={classes.title}
+              >
+                <Link
+                  component={RouterLink}
+                  color="inherit"
+                  target="_blank"
+                  to={{
+                    pathname: 'https://app.tzwrap.com/',
+                  }}
+                >
+                  Wrap <LaunchIcon className={classes.externalIcon} />
+                </Link>
+              </Typography>
+
+            </Grid>
+            <Grid item>
+              <Typography
+                variant="h6"
+                component="h1"
+                className={classes.title}
+              >
+                <Link
+                  component={RouterLink}
+                  color="inherit"
+                  target="_blank"
+                  to={{
+                    pathname: 'https://info.tzwrap.com/',
+                  }}
+                >
+                  Info <LaunchIcon className={classes.externalIcon} />
+                </Link>
+              </Typography>
+            </Grid>
+
           </Grid>
 
           <Grid
