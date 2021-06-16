@@ -33,6 +33,7 @@ export interface Config {
     networkName: string;
   };
   programs: ProgramConfig[];
+  statisticsApiUrl: string;
 }
 
 const env =
@@ -48,4 +49,5 @@ export const initialConfig: Config = {
     networkName: process.env.REACT_APP_TZ_NETWORK_NAME!,
   },
   programs: programs[env],
+  statisticsApiUrl: process.env.REACT_APP_STATISTICS!
 };

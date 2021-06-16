@@ -10,10 +10,12 @@ import TezosTokenIcon from '../../components/icons/TezosTokenIcon';
 import TezosIcon from '../../components/icons/TezosIcon';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import React from 'react';
+import { LiquidityMiningApy } from '../apy/api/types';
 
 export type ProgramListProps = {
   programs: ProgramConfig[];
   onProgramSelect: (farm: string) => void;
+  liquidityMiningApys: Array<LiquidityMiningApy> | undefined;
 };
 
 const useStyle = makeStyles(() => createStyles({
@@ -29,7 +31,13 @@ const useStyle = makeStyles(() => createStyles({
   option: {
     fontSize: '20px'
   },
+  apy: {
+    fontSize: '16px',
 
+    '& > span': {
+      fontWeight: 900,
+    },
+  },
   item: {
     '&:hover': {
       cursor: 'pointer'
@@ -46,9 +54,11 @@ const useStyle = makeStyles(() => createStyles({
 
 function Program({
   program,
+  apy,
   onClick,
 }: {
   program: ProgramConfig;
+  apy: LiquidityMiningApy | undefined;
   onClick: () => void;
 }) {
   const classes = useStyle();
@@ -75,6 +85,10 @@ function Program({
           <Typography className={classes.option}>
             Quipuswap {symbol}/{quote.toUpperCase()}
           </Typography>
+          { apy && <Typography className={classes.apy}>
+            APY: <span>{parseFloat(apy.apy).toFixed(0)}%</span>
+          </Typography>
+          }
         </Grid>
         <Grid item>
           <IconButton>
@@ -89,6 +103,7 @@ function Program({
 export default function ProgramList({
   programs,
   onProgramSelect,
+  liquidityMiningApys
 }: ProgramListProps) {
   return (
     <Grid container spacing={2} direction={'column'}>
@@ -97,6 +112,7 @@ export default function ProgramList({
           <Program
             program={t}
             onClick={() => onProgramSelect(t.farmingContract)}
+            apy={liquidityMiningApys ? liquidityMiningApys.find(l => l.farmingContract === t.farmingContract) : undefined}
           />
         </Grid>
       ))}

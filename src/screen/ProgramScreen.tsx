@@ -24,6 +24,9 @@ const useStyles = makeStyles(() =>
       color: 'white',
       marginBottom: '10px',
     },
+    mainContainer: {
+      marginBottom: '20px'
+    },
     tab: {
       textTransform: 'none',
       fontWeight: 900,
@@ -85,7 +88,7 @@ export default function ProgramScreen() {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" className={classes.mainContainer}>
       <Tabs
         value={path}
         onChange={onTabChange}

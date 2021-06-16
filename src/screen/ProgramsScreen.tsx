@@ -5,11 +5,15 @@ import { useConfig } from '../runtime/config/ConfigContext';
 import ProgramList from '../features/program/ProgramList';
 import { useHistory } from 'react-router';
 import { opPage } from '../routes';
+import { useLiquidityMiningApy } from '../features/apy/hook/useLiquidityMiningApy';
 
 const useStyles = makeStyles((theme) => createStyles({
   subtitle: {
     color: '#000000',
     textAlign: 'center',
+    marginBottom: '20px'
+  },
+  mainContainer: {
     marginBottom: '20px'
   },
   containBox: {
@@ -35,8 +39,9 @@ export default function ProgramsScreen() {
   const classes = useStyles();
   const history = useHistory();
   const { programs } = useConfig();
+  const { liquidityMiningApys } = useLiquidityMiningApy();
   return (
-    <Container  maxWidth={'sm'}>
+    <Container maxWidth={'sm'} className={classes.mainContainer}>
 
       <Box className={classes.titleCenter} my={2} >
         <Typography className={classes.title}>Liquidity Mining Programs</Typography>
@@ -47,11 +52,11 @@ export default function ProgramsScreen() {
         <Typography variant={'subtitle1'} className={classes.subtitle}>Select an option to stake, unstake or claim your
           rewards.</Typography>
       <ProgramList
-
         programs={programs}
         onProgramSelect={(t) => {
           history.push(opPage(t));
         }}
+        liquidityMiningApys={liquidityMiningApys}
       />
       </Box>
 
