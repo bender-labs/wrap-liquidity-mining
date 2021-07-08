@@ -32,7 +32,7 @@ const useStyle = makeStyles(() => createStyles({
     fontSize: '20px'
   },
   apy: {
-    fontSize: '16px',
+    fontSize: '14px',
 
     '& > span': {
       fontWeight: 900,
@@ -87,6 +87,7 @@ function Program({
           </Typography>
           { apy && <Typography className={classes.apy}>
             APY: <span>{parseFloat(apy.apy).toFixed(0)}%</span>
+            {' '}APR: <span>{parseFloat(apy.apr).toFixed(0)}%</span>
           </Typography>
           }
         </Grid>
