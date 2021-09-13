@@ -71,7 +71,7 @@ function Program({
     },
   } = program;
   return (
-    <PaperContent className={apy && apy.running ? classes.main : classes.mainNotRunning}>
+    <PaperContent className={(!apy || apy.running) ? classes.main : classes.mainNotRunning}>
       <Grid
         container
         justify={'space-between'}
