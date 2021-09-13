@@ -10,7 +10,16 @@ export function useLiquidityMiningApy() {
 
   useEffect(() => {
     const loadLiquidityMiningApy = async () => {
-      setLiquidityMiningApys(await api.fetchLiquidityMiningApy());
+      const liquidityMiningContracts = await api.fetchLiquidityMiningApy();
+      for (const liquidityMiningContract of liquidityMiningContracts) {
+        if (!liquidityMiningContract.running) {
+          liquidityMiningContract.apy = '0';
+          liquidityMiningContract.apr = '0';
+          liquidityMiningContract.totalRewardsPerDay = '0';
+          liquidityMiningContract.totalRewardsPerDayInUsd = '0';
+        }
+      }
+      setLiquidityMiningApys(liquidityMiningContracts);
     };
     // noinspection JSIgnoredPromiseFromCall
     loadLiquidityMiningApy();

@@ -21,12 +21,15 @@ export type ProgramListProps = {
 const useStyle = makeStyles(() => createStyles({
   main: {
     borderRadius: '10px 10px 10px 10px',
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     transition: 'background-color 1s ease',
     '&:hover': {
       backgroundColor: '#FFD000'
     },
-
+  },
+  mainNotRunning: {
+    borderRadius: '10px 10px 10px 10px',
+    backgroundColor: '#C1C1C1',
   },
   option: {
     fontSize: '20px'
@@ -47,8 +50,7 @@ const useStyle = makeStyles(() => createStyles({
     '& img': { width: 60, height: 60, marginRight: 5, verticalAlign: 'middle' },
     '& :first-child': { left: '0', position: 'relative' },
     '& :last-child': { marginLeft: '-20px' }
-
-  }
+  },
 }));
 
 
@@ -69,7 +71,7 @@ function Program({
     },
   } = program;
   return (
-    <PaperContent className={classes.main}>
+    <PaperContent className={apy && apy.running ? classes.main : classes.mainNotRunning}>
       <Grid
         container
         justify={'space-between'}
@@ -88,8 +90,7 @@ function Program({
           { apy && <Typography className={classes.apy}>
             APY: <span>{parseFloat(apy.apy).toFixed(0)}%</span>
             {' '}APR: <span>{parseFloat(apy.apr).toFixed(0)}%</span>
-          </Typography>
-          }
+          </Typography> }
         </Grid>
         <Grid item>
           <IconButton>
