@@ -9,4 +9,6 @@ export interface LiquidityMiningApy {
     farmingContract: string;
     quipuswapContract: string;
     running: boolean;
+    remainingBlocks: number;
+    remainingSeconds: number;
 }

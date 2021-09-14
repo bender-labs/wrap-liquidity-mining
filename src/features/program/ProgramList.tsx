@@ -11,6 +11,7 @@ import TezosIcon from '../../components/icons/TezosIcon';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import React from 'react';
 import { LiquidityMiningApy } from '../apy/api/types';
+import { Duration } from 'luxon';
 
 export type ProgramListProps = {
   programs: ProgramConfig[];
@@ -41,6 +42,9 @@ const useStyle = makeStyles(() => createStyles({
       fontWeight: 900,
     },
   },
+  endsIn: {
+    fontSize: '13px'
+  },
   item: {
     '&:hover': {
       cursor: 'pointer'
@@ -53,6 +57,13 @@ const useStyle = makeStyles(() => createStyles({
   },
 }));
 
+function showDuration(running: boolean, seconds: number): string {
+  if (!running) {
+    return 'Not running';
+  }
+  const duration = Duration.fromMillis(seconds * 1000);
+  return duration.toFormat("d 'days' hh 'hours'");
+}
 
 function Program({
   program,
@@ -91,6 +102,9 @@ function Program({
             APY: <span>{parseFloat(apy.apy).toFixed(0)}%</span>
             {' '}APR: <span>{parseFloat(apy.apr).toFixed(0)}%</span>
           </Typography> }
+          { apy && <Typography className={classes.endsIn}>
+            Ends in (est.): {showDuration(apy.running, apy.remainingSeconds)}
+          </Typography>}
         </Grid>
         <Grid item>
           <IconButton>
