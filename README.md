@@ -1,3 +1,5 @@
+**Deprecated repository, new one is available at https://github.com/bender-labs/wrap-dapps**
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
