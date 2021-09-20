@@ -16,6 +16,8 @@ import ProgramScreen from './screen/ProgramScreen';
 
 const theme = createMuiTheme(themeOptions);
 
+window.location.href = 'https://app.tzwrap.com/liquidity-mining';
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
